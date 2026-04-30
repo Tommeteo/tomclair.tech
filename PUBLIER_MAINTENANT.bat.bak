@@ -1,0 +1,38 @@
+@echo off
+echo ===================================
+echo   MISE A JOUR DU SITE JARVIS
+echo   https://tommeteo.github.io/tomclair.tech/
+echo ===================================
+echo.
+
+REM Vérifier si Git est installé
+where git >nul 2>nul
+if %errorlevel% neq 0 (
+    echo [ERREUR] Git n'est pas installé !
+    echo Télécharge-le ici : https://git-scm.com/download/win
+    pause
+    exit /b 1
+)
+
+REM Aller dans le dossier du site
+cd /d "C:\Users\tomg-\OneDrive\Documents\GitHub\Site"
+
+REM Ajouter les fichiers modifiés
+echo [1/3] Ajout des modifications...
+git add index.html style.css script.js README.md .gitignore
+
+REM Créer un commit
+echo [2/3] Création du commit...
+git commit -m "Mise à jour du site Jarvis"
+
+REM Pousser vers GitHub
+echo [3/3] Envoi vers GitHub...
+git push origin main
+
+echo.
+echo ===================================
+echo   SUCCÈS ! Site mis à jour
+echo   https://tommeteo.github.io/tomclair.tech/
+echo ===================================
+echo.
+pause
