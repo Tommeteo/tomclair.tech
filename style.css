@@ -306,53 +306,69 @@ body {
 /* Hero Social Links */
 .hero-socials {
     display: flex;
-    gap: 1rem;
+    gap: 1.2rem;
     justify-content: center;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     flex-wrap: wrap;
 }
 
 .social-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border-radius: 30px;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 50px;
     font-family: 'Rajdhani', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 1.05rem;
+    font-weight: 700;
     letter-spacing: 1px;
     text-decoration: none;
-    transition: var(--transition);
-    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+}
+
+.social-link i {
+    font-size: 1.4rem;
+}
+
+.social-link span {
+    font-size: 1rem;
 }
 
 .social-tiktok {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.social-tiktok i {
+    color: #ffffff;
 }
 
 .social-tiktok:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: linear-gradient(135deg, rgba(105, 201, 208, 0.2), rgba(238, 29, 82, 0.2));
     border-color: #69C9D0;
     color: #69C9D0;
-    box-shadow: 0 0 20px rgba(105, 201, 208, 0.3);
-    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(105, 201, 208, 0.4), 0 4px 20px rgba(0,0,0,0.3);
+    transform: translateY(-3px);
 }
 
 .social-instagram {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.social-instagram i {
+    color: #ffffff;
 }
 
 .social-instagram:hover {
-    background: rgba(193, 53, 132, 0.12);
-    border-color: #C13584;
-    color: #e1306c;
-    box-shadow: 0 0 20px rgba(225, 48, 108, 0.3);
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(255, 220, 128, 0.15), rgba(193, 53, 132, 0.2), rgba(131, 58, 180, 0.15));
+    border-color: #e1306c;
+    color: #f77737;
+    box-shadow: 0 0 25px rgba(225, 48, 108, 0.4), 0 4px 20px rgba(0,0,0,0.3);
+    transform: translateY(-3px);
 }
 
 /* Buttons */
