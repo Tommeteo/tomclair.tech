@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis - Contrôle à Distance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            background: rgba(0, 217, 255, 0.1);
+            padding: 15px 20px;
+            border-bottom: 2px solid #00d9ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            color: #00d9ff;
+            text-shadow: 0 0 10px #00d9ff;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e94560;
+            box-shadow: 0 0 10px #e94560;
+            transition: all 0.3s;
+        }
+
+        .status-dot.connected {
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .screen-container {
+            flex: 1;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #screenImage {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            cursor: crosshair;
+            border: 2px solid #333;
+        }
+
+        #screenImage.active {
+            border-color: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .screen-placeholder {
+            text-align: center;
+            color: #666;
+            padding: 50px;
+        }
+
+        .screen-placeholder .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .controls-panel {
+            width: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            border-left: 1px solid #333;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .control-section h3 {
+            color: #00d9ff;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid #00d9ff;
+            color: #00d9ff;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #00d9ff;
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn.danger {
+            border-color: #e94560;
+            color: #e94560;
+        }
+
+        .btn.danger:hover {
+            background: #e94560;
+            color: #fff;
+        }
+
+        .btn.success {
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+
+        .btn.success:hover {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .input-group {
+            margin: 10px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+            font-size: 0.85em;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a2e;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: #00d9ff;
+        }
+
+        .keyboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .keyboard-grid .btn {
+            padding: 15px 5px;
+            font-size: 0.8em;
+        }
+
+        .info-box {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid #00d9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.85em;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+
+        .connection-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #00d9ff;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 217, 255, 0.3);
+            z-index: 1000;
+        }
+
+        .connection-panel h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+        }
+
+        .connection-panel input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .mouse-info {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            color: #00d9ff;
+            border: 1px solid #00d9ff;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .controls-panel {
+                width: 100%;
+                height: 300px;
+                border-left: none;
+                border-top: 1px solid #333;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="connectionPanel" class="connection-panel">
+        <h2>🎮 Connexion à Jarvis</h2>
+        <p>Entrez l'adresse WebSocket de Jarvis</p>
+        <input type="text" id="wsUrl" placeholder="ws://192.168.1.23:8765" value="ws://192.168.1.23:8765">
+        <button class="btn success" onclick="connect()">Se Connecter</button>
+    </div>
+
+    <div id="mainInterface" class="container hidden">
+        <div class="header">
+            <h1>🎮 JARVIS - Contrôle à Distance</h1>
+            <div class="status">
+                <span id="statusText">Déconnecté</span>
+                <div id="statusDot" class="status-dot"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="screen-container">
+                <div id="screenPlaceholder" class="screen-placeholder">
+                    <div class="icon">🖥️</div>
+                    <p>En attente du stream d'écran...</p>
+                    <p>Cliquez sur "Démarrer Contrôle" pour voir l'écran de Jarvis</p>
+                </div>
+                <img id="screenImage" class="hidden" alt="Écran Jarvis">
+                <div id="mouseInfo" class="mouse-info hidden">X: 0, Y: 0</div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="info-box">
+                    <p><strong>💡 Instructions:</strong></p>
+                    <p>• Cliquez sur l'écran pour envoyer des actions</p>
+                    <p>• Utilisez les boutons pour le clavier</p>
+                    <p>• Le stream est en temps réel (10 FPS)</p>
+                </div>
+
+                <div class="control-section">
+                    <h3>🔌 Connexion</h3>
+                    <button class="btn success" onclick="startControle()">Démarrer Contrôle</button>
+                    <button class="btn danger" onclick="stopControle()">Arrêter Contrôle</button>
+                </div>
+
+                <div class="control-section">
+                    <h3>🖱️ Souris</h3>
+                    <button class="btn" onclick="sendMouseCommand('click')">Clic Gauche</button>
+                    <button class="btn" onclick="sendMouseCommand('click', null, null, 'right')">Clic Droit</button>
+                    <button class="btn" onclick="sendMouseCommand('double_click')">Double Clic</button>
+                </div>
+
+                <div class="control-section">
+                    <h3>⌨️ Clavier</h3>
+                    <div class="input-group">
+                        <label>Texte à taper:</label>
+                        <textarea id="textToType" rows="2" placeholder="Entrez du texte..."></textarea>
+                    </div>
+                    <button class="btn" onclick="typeText()">Taper le texte</button>
+                    
+                    <div style="margin-top: 15px;">
+                        <label style="color: #aaa; font-size: 0.85em;">Touches rapides:</label>
+                        <div class="keyboard-grid">
+                            <button class="btn" onclick="sendKeyCommand('press', 'enter')">↵ Enter</button>
+                            <button class="btn" onclick="sendKeyCommand('press', 'tab')">↹ Tab</button>
+                            <button class="btn" onclick="sendKeyCommand('press', 'esc')">Esc</button>
+                            <button class="btn" onclick="sendKeyCommand('hotkey', 'ctrl+c')">Ctrl+C</button>
+                            <button class="btn" onclick="sendKeyCommand('hotkey', 'ctrl+v')">Ctrl+V</button>
+                            <button class="btn" onclick="sendKeyCommand('hotkey', 'alt+f4')">Alt+F4</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>📊 Logs</h3>
+                    <div id="logs" style="background: #0a0a0a; padding: 10px; border-radius: 5px; font-size: 0.8em; max-height: 150px; overflow-y: auto; color: #888;">
+                        <div>> En attente de connexion...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        let isControlling = false;
+        let reconnectTimer = null;
+        let reconnectAttempts = 0;
+        const MAX_RECONNECT_ATTEMPTS = 3;
+
+        const WS_URLS = ['ws://localhost:8765', 'ws://127.0.0.1:8765', 'ws://192.168.1.23:8765'];
+        let currentUrlIndex = 0;
+
+        function log(message) {
+            const logs = document.getElementById('logs');
+            const div = document.createElement('div');
+            const time = new Date().toLocaleTimeString();
+            div.textContent = `> ${time}: ${message}`;
+            logs.appendChild(div);
+            logs.scrollTop = logs.scrollHeight;
+            console.log(`[CONTROLE] ${message}`);
+        }
+
+        function connect() {
+            // Fermer l'ancienne connexion si existe
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            }
+            
+            const url = document.getElementById('wsUrl').value || WS_URLS[currentUrlIndex];
+            
+            log(`🔌 Connexion à ${url}...`);
+            console.log(`[CONTROLE] Tentative de connexion à ${url}`);
+            
+            try {
+                ws = new WebSocket(url);
+
+                ws.onopen = () => {
+                    log('✅ Connecté à Jarvis!');
+                    console.log('[CONTROLE] WebSocket connecté');
+                    reconnectAttempts = 0;
+                    document.getElementById('connectionPanel').classList.add('hidden');
+                    document.getElementById('mainInterface').classList.remove('hidden');
+                    updateStatus(true);
+                };
+
+                ws.onmessage = (event) => {
+                    try {
+                        console.log('[CONTROLE] Message reçu:', event.data.substring(0, 100));
+                        const data = JSON.parse(event.data);
+                        
+                        if (data.type === 'controle_screen') {
+                            // Recevoir le stream d'écran
+                            const img = document.getElementById('screenImage');
+                            const placeholder = document.getElementById('screenPlaceholder');
+                            
+                            img.src = 'data:image/jpeg;base64,' + data.image;
+                            img.classList.remove('hidden');
+                            img.classList.add('active');
+                            placeholder.classList.add('hidden');
+                            document.getElementById('mouseInfo').classList.remove('hidden');
+                        }
+                        else if (data.type === 'command_result') {
+                            log('📨 ' + data.result);
+                        }
+                        else if (data.type === 'controle_status') {
+                            isControlling = data.active;
+                            log(`🎮 Mode contrôle: ${data.active ? 'ACTIF' : 'INACTIF'}`);
+                        }
+                        else {
+                            console.log('[CONTROLE] Type de message inconnu:', data.type);
+                        }
+                    } catch (e) {
+                        console.error('[CONTROLE] Erreur parsing message:', e);
+                        log('❌ Erreur traitement message');
+                    }
+                };
+
+                ws.onerror = (error) => {
+                    console.error('[CONTROLE] WebSocket error:', error);
+                    log('❌ Erreur de connexion WebSocket');
+                };
+
+                ws.onclose = (event) => {
+                    console.log('[CONTROLE] WebSocket fermé:', event.code, event.reason);
+                    log('🔌 Déconnecté');
+                    updateStatus(false);
+                    isControlling = false;
+                    
+                    // Cacher l'image
+                    document.getElementById('screenImage').classList.add('hidden');
+                    document.getElementById('screenImage').classList.remove('active');
+                    document.getElementById('screenPlaceholder').classList.remove('hidden');
+                    document.getElementById('mouseInfo').classList.add('hidden');
+                    
+                    // Reconnexion automatique
+                    reconnectAttempts++;
+                    if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+                        currentUrlIndex = (currentUrlIndex + 1) % WS_URLS.length;
+                        const nextUrl = WS_URLS[currentUrlIndex];
+                        log(`🔄 Reconnexion dans 2s sur ${nextUrl}...`);
+                        setTimeout(() => {
+                            document.getElementById('wsUrl').value = nextUrl;
+                            connect();
+                        }, 2000);
+                    } else {
+                        log('❌ Impossible de se connecter après plusieurs tentatives');
+                        document.getElementById('connectionPanel').classList.remove('hidden');
+                        document.getElementById('mainInterface').classList.add('hidden');
+                        reconnectAttempts = 0;
+                    }
+                };
+            } catch (e) {
+                console.error('[CONTROLE] Erreur création WebSocket:', e);
+                log('❌ Erreur création connexion: ' + e.message);
+            }
+        }
+
+        function updateStatus(connected) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            
+            if (connected) {
+                dot.classList.add('connected');
+                text.textContent = 'Connecté';
+            } else {
+                dot.classList.remove('connected');
+                text.textContent = 'Déconnecté';
+            }
+        }
+
+        function startControle() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                log('❌ Non connecté à Jarvis!');
+                alert('Non connecté à Jarvis! Cliquez d\'abord sur "Se Connecter"');
+                return;
+            }
+            
+            try {
+                ws.send(JSON.stringify({ type: 'controle_start' }));
+                log('🎮 Démarrage du mode contrôle...');
+                isControlling = true;
+            } catch (e) {
+                log('❌ Erreur démarrage contrôle: ' + e.message);
+            }
+        }
+
+        function stopControle() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                log('❌ Non connecté');
+                return;
+            }
+            
+            try {
+                ws.send(JSON.stringify({ type: 'controle_stop' }));
+                log('🛑 Arrêt du mode contrôle');
+                isControlling = false;
+                
+                // Cacher l'image
+                document.getElementById('screenImage').classList.add('hidden');
+                document.getElementById('screenImage').classList.remove('active');
+                document.getElementById('screenPlaceholder').classList.remove('hidden');
+                document.getElementById('mouseInfo').classList.add('hidden');
+            } catch (e) {
+                log('❌ Erreur arrêt contrôle: ' + e.message);
+            }
+        }
+
+        function sendMouseCommand(action, x, y, button = 'left') {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                log('❌ Non connecté pour envoyer commande souris');
+                return;
+            }
+            
+            try {
+                const message = {
+                    type: 'mouse_command',
+                    action: action,
+                    x: x,
+                    y: y,
+                    button: button
+                };
+                
+                ws.send(JSON.stringify(message));
+                log(`🖱️ Souris: ${action}${x !== null ? ` (${x}, ${y})` : ''}`);
+            } catch (e) {
+                log('❌ Erreur envoi commande souris');
+            }
+        }
+
+        function sendKeyCommand(action, key) {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                log('❌ Non connecté pour envoyer commande clavier');
+                return;
+            }
+            
+            try {
+                const message = {
+                    type: 'keyboard_command',
+                    action: action,
+                    key: key
+                };
+                
+                ws.send(JSON.stringify(message));
+                log(`⌨️ Clavier: ${action} ${key}`);
+            } catch (e) {
+                log('❌ Erreur envoi commande clavier');
+            }
+        }
+
+        function typeText() {
+            const text = document.getElementById('textToType').value;
+            if (!text) {
+                log('❌ Aucun texte à taper');
+                return;
+            }
+            
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                log('❌ Non connecté pour taper du texte');
+                return;
+            }
+            
+            try {
+                ws.send(JSON.stringify({
+                    type: 'keyboard_command',
+                    action: 'write',
+                    text: text
+                }));
+                
+                log(`📝 Texte tapé: "${text.substring(0, 30)}${text.length > 30 ? '...' : ''}"`);
+                document.getElementById('textToType').value = '';
+            } catch (e) {
+                log('❌ Erreur envoi texte');
+            }
+        }
+
+        // Gestion des clics sur l'écran
+        document.getElementById('screenImage').addEventListener('click', function(e) {
+            if (!isControlling) {
+                log('Mode contrôle non actif. Cliquez sur "Démarrer Contrôle"');
+                return;
+            }
+            
+            const rect = this.getBoundingClientRect();
+            const x = Math.round((e.clientX - rect.left) * (this.naturalWidth / rect.width));
+            const y = Math.round((e.clientY - rect.top) * (this.naturalHeight / rect.height));
+            
+            // Mettre à jour l'affichage des coordonnées
+            document.getElementById('mouseInfo').textContent = `X: ${x}, Y: ${y}`;
+            
+            // Envoyer la commande
+            sendMouseCommand('click', x, y);
+        });
+
+        document.getElementById('screenImage').addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = Math.round((e.clientX - rect.left) * (this.naturalWidth / rect.width));
+            const y = Math.round((e.clientY - rect.top) * (this.naturalHeight / rect.height));
+            document.getElementById('mouseInfo').textContent = `X: ${x}, Y: ${y}`;
+        });
+
+        // Touche Entrée pour envoyer le texte
+        document.getElementById('textToType').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                typeText();
+            }
+        });
+    </script>
+</body>
+</html>

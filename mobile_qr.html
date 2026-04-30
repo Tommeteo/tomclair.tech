@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis Mobile - QR Code</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #00d9ff;
+            text-shadow: 0 0 20px #00d9ff;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .qr-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+        }
+        
+        #qrcode {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .url-box {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid #00d9ff;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 1.1em;
+            color: #00d9ff;
+            word-break: break-all;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #00d9ff;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #00d9ff;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #00d9ff 0%, #0066ff 100%);
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+        }
+        
+        .ip-input {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            width: 200px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .ip-input:focus {
+            outline: none;
+            border-color: #00d9ff;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .status.ok {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        
+        .status.error {
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 JARVIS Mobile</h1>
+        <p class="subtitle">Scanne le QR code avec ton téléphone</p>
+        
+        <div>
+            <label style="color: #888; font-size: 0.9em;">Adresse IP de ton PC :</label><br>
+            <input type="text" id="ipInput" class="ip-input" value="192.168.1.23" placeholder="192.168.1.23">
+            <br>
+            <button onclick="updateQR()" class="btn" style="padding: 8px 20px; font-size: 0.9em;">🔄 Mettre à jour</button>
+        </div>
+        
+        <div class="qr-container">
+            <div id="qrcode"></div>
+        </div>
+        
+        <div class="url-box" id="urlDisplay">
+            http://192.168.1.23:8080/mobile/
+        </div>
+        
+        <div class="instructions">
+            <h3>📋 Comment utiliser :</h3>
+            <ol>
+                <li><strong>Assure-toi que Jarvis est démarré</strong> sur ton PC</li>
+                <li><strong>Scanne le QR code</strong> avec l'appareil photo de ton téléphone</li>
+                <li><strong>Ouvre le lien</strong> qui apparaît</li>
+                <li><strong>Parle à Jarvis</strong> en appuyant sur le bouton micro ! 🎤</li>
+            </ol>
+        </div>
+        
+        <div id="status" class="status ok">
+            ✅ Prêt à scanner !
+        </div>
+        
+        <a href="http://localhost:5173" class="btn">🖥️ Ouvrir l'interface PC</a>
+    </div>
+
+    <script>
+        let qrCode = null;
+        
+        function updateQR() {
+            const ip = document.getElementById('ipInput').value.trim() || '192.168.1.23';
+            const url = `http://${ip}:8080/mobile/`;
+            
+            // Mettre à jour l'affichage de l'URL
+            document.getElementById('urlDisplay').textContent = url;
+            
+            // Générer le QR code
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            
+            qrCode = new QRCode(qrContainer, {
+                text: url,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.M
+            });
+            
+            // Vérifier la connexion
+            testConnection(ip);
+        }
+        
+        async function testConnection(ip) {
+            const statusEl = document.getElementById('status');
+            statusEl.className = 'status';
+            statusEl.textContent = '⏳ Test de connexion...';
+            
+            try {
+                const response = await fetch(`http://${ip}:8080/mobile/`, { 
+                    method: 'HEAD',
+                    mode: 'no-cors'
+                });
+                statusEl.className = 'status ok';
+                statusEl.textContent = '✅ Connexion OK - Jarvis est accessible !';
+            } catch (e) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Impossible de se connecter. Vérifie que Jarvis est démarré.';
+            }
+        }
+        
+        // Générer le QR code au chargement
+        window.onload = updateQR;
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>J.A.R.V.I.S — Mobile</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Panel de configuration IP */
+      #config-panel {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+      }
+      #config-panel.hidden { display: none !important; }
+      #config-panel h2 {
+        color: #00d9ff;
+        text-shadow: 0 0 10px #00d9ff;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      #config-panel .ip-input {
+        width: 100%;
+        max-width: 300px;
+        padding: 15px;
+        font-size: 1.2em;
+        background: rgba(255,255,255,0.1);
+        border: 2px solid #333;
+        border-radius: 10px;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+      #config-panel .ip-input:focus {
+        outline: none;
+        border-color: #00d9ff;
+      }
+      #config-panel .btn {
+        background: linear-gradient(135deg, #00d9ff, #0066ff);
+        color: #fff;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.1em;
+        border-radius: 30px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      #config-panel .status-msg {
+        margin-top: 20px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 0.9em;
+        text-align: center;
+      }
+      #config-panel .status-msg.error {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+      }
+      #config-panel .status-msg.success {
+        background: rgba(34, 197, 94, 0.2);
+        color: #22c55e;
+      }
+      #config-panel .help-text {
+        color: #888;
+        font-size: 0.85em;
+        margin-top: 20px;
+        text-align: center;
+        line-height: 1.6;
+      }
+      .reconnect-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #e94560;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        z-index: 100;
+        display: none;
+      }
+      .reconnect-btn.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Panel de configuration IP -->
+    <div id="config-panel">
+      <h2>🔌 Connexion à Jarvis</h2>
+      <input type="text" id="server-ip" class="ip-input" placeholder="192.168.1.23" value="192.168.1.23">
+      <button class="btn" onclick="connectToJarvis()">Se Connecter</button>
+      <button class="btn" onclick="autoDetectIP()" style="background: #333; font-size: 0.9em; padding: 10px 25px;">🔄 Détection auto</button>
+      <div id="config-status" class="status-msg" style="display:none;"></div>
+      <div class="help-text">
+        💡 <strong>Comment trouver l'IP :</strong><br>
+        Sur Windows : Ouvrir CMD → taper <code>ipconfig</code><br>
+        Chercher "Adresse IPv4"<br><br>
+        Assure-toi que ton téléphone et PC<br>sont sur le même WiFi.
+      </div>
+    </div>
+
+    <!-- Bouton reconnexion -->
+    <button id="reconnect-btn" class="reconnect-btn" onclick="showConfig()">⚠️ Déconnecté - Cliquer ici</button>
+
+    <!-- Étoiles de fond -->
+    <div id="stars"></div>
+
+    <!-- Badge de connexion -->
+    <div id="connection-badge">
+      <span id="connection-dot"></span>
+      <span id="connection-label">connexion...</span>
+    </div>
+
+    <!-- Bouton pour stopper la parole -->
+    <button id="stop-jarvis-btn" aria-label="Stopper JARVIS">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="currentColor" fill-opacity="0.2"/>
+        <path d="M15 9H9V15H15V9Z" fill="currentColor"/>
+      </svg>
+      STOP
+    </button>
+
+    <!-- Contenu principal -->
+    <main id="app">
+
+      <!-- Orbe animé -->
+      <div id="orb-container">
+        <div class="orb-ring ring-3"></div>
+        <div class="orb-ring ring-2"></div>
+        <div class="orb-ring ring-1"></div>
+        <div id="orb-core">
+          <div id="orb-inner"></div>
+        </div>
+      </div>
+
+      <!-- Texte de statut -->
+      <div id="status-text">en attente</div>
+
+      <!-- Zone de transcription (ce que l'utilisateur a dit) -->
+      <div id="user-text" class="speech-bubble user-bubble"></div>
+
+      <!-- Zone de réponse JARVIS -->
+      <div id="jarvis-text" class="speech-bubble jarvis-bubble"></div>
+
+      <!-- Bouton microphone -->
+      <div id="mic-area">
+        <button id="mic-btn" aria-label="Parler à JARVIS">
+          <svg class="mic-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="9" y="2" width="6" height="12" rx="3" fill="currentColor"/>
+            <path d="M5 11a7 7 0 0 0 14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="12" y1="18" x2="12" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="8" y1="22" x2="16" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <svg class="stop-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+            <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/>
+          </svg>
+        </button>
+        <div id="mic-label">APPUYER POUR PARLER</div>
+      </div>
+
+      <!-- Label bas de page -->
+      <div id="assistant-label">J.A.R.V.I.S</div>
+
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
