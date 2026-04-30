@@ -303,6 +303,58 @@ body {
     flex-wrap: wrap;
 }
 
+/* Hero Social Links */
+.hero-socials {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.social-tiktok {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.social-tiktok:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #69C9D0;
+    color: #69C9D0;
+    box-shadow: 0 0 20px rgba(105, 201, 208, 0.3);
+    transform: translateY(-2px);
+}
+
+.social-instagram {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.social-instagram:hover {
+    background: rgba(193, 53, 132, 0.12);
+    border-color: #C13584;
+    color: #e1306c;
+    box-shadow: 0 0 20px rgba(225, 48, 108, 0.3);
+    transform: translateY(-2px);
+}
+
 /* Buttons */
 .btn {
     display: inline-flex;
