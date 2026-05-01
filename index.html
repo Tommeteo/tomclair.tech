@@ -26,6 +26,7 @@
             <div class="nav-links">
                 <a href="#hero" class="nav-link active">Accueil</a>
                 <a href="#features" class="nav-link">Fonctionnalités</a>
+                <a href="#install" class="nav-link">Installation</a>
                 <a href="#tech" class="nav-link">Technique</a>
                 <a href="#faq" class="nav-link">FAQ</a>
                 <a href="#contact" class="nav-link">Contact</a>
@@ -126,6 +127,231 @@
                 <div class="feature-card reveal">
                     <h3>Multi-Plateforme</h3>
                     <p>Accédez depuis n'importe quel appareil.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="install" id="install">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">INSTALLATION</span>
+                <h2 class="section-title">Installer Jarvis sur Votre Système</h2>
+                <p class="section-subtitle">Suivez ces étapes simples pour déployer Jarvis avec Python 3.12.9</p>
+            </div>
+            
+            <div class="install-grid">
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">1</div>
+                        <h3>Prérequis Système</h3>
+                    </div>
+                    <div class="install-content">
+                        <ul class="requirements">
+                            <li><i class="fa-brands fa-python"></i> Python 3.12.9 ou supérieur</li>
+                            <li><i class="fa-solid fa-microchip"></i> 4GB RAM minimum</li>
+                            <li><i class="fa-solid fa-hdd"></i> 2GB d'espace disque</li>
+                            <li><i class="fa-solid fa-wifi"></i> Connection internet stable</li>
+                            <li><i class="fa-brands fa-windows"></i> Windows 10/11 (recommandé)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">2</div>
+                        <h3>Installation Python 3.12.9</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Téléchargement</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># 1. Télécharger Python 3.12.9
+# Visiter: https://www.python.org/downloads/release/python-3129/
+# Choisir "Windows installer (64-bit)"
+
+# 2. Installation (cocher "Add Python to PATH")
+# Lancer l'installateur et suivre les instructions</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">3</div>
+                        <h3>Clonage du Projet</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Commandes Git</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Cloner le dépôt Jarvis
+git clone https://github.com/tomtechclair/tomclair.tech.git
+cd tomclair.tech
+
+# Ou télécharger directement depuis GitHub
+# https://github.com/tomtechclair/tomclair.tech</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">4</div>
+                        <h3>Configuration Environnement</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Environnement Virtuel</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Créer l'environnement virtuel
+python -m venv jarvis_env
+
+# Activer l'environnement
+# Windows:
+jarvis_env\Scripts\activate
+
+# Linux/Mac:
+source jarvis_env/bin/activate</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">5</div>
+                        <h3>Installation Dépendances</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Packages Python</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Installer les dépendances
+pip install -r requirements.txt
+
+# Ou installation manuelle des packages principaux
+pip install openai whisper speechrecognition
+pip install flask requests numpy pandas
+pip install pyttsx3 beautifulsoup4 selenium</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">6</div>
+                        <h3>Configuration API</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Fichier .env</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Créer le fichier .env
+OPENAI_API_KEY=votre_clé_openai_ici
+GOOGLE_API_KEY=votre_clé_google_ici
+ELEVENLABS_API_KEY=votre_clé_elevenlabs_ici
+
+# Clés API disponibles sur:
+# - OpenAI: https://platform.openai.com/api-keys
+# - Google: https://console.cloud.google.com/
+# - ElevenLabs: https://elevenlabs.io/app/settings/api-keys</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">7</div>
+                        <h3>Lancement Jarvis</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Démarrage</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Lancer Jarvis (interface web)
+python main2.py
+
+# Ou lancer l'assistant vocal
+python jarvis_agent.py
+
+# Accéder à l'interface web:
+# http://localhost:8000</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">8</div>
+                        <h3>Vérification Installation</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="verification-list">
+                            <div class="verify-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Interface web accessible sur localhost:8000</span>
+                            </div>
+                            <div class="verify-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Assistant vocal répond aux commandes</span>
+                            </div>
+                            <div class="verify-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>API keys configurées et fonctionnelles</span>
+                            </div>
+                            <div class="verify-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Logs sans erreurs critiques</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="install-troubleshoot reveal">
+                <h3><i class="fa-solid fa-wrench"></i> Dépannage & Solutions</h3>
+                <div class="troubleshoot-grid">
+                    <div class="trouble-item">
+                        <h4>Python non reconnu</h4>
+                        <p>Ajoutez Python au PATH Windows ou réinstallez en cochant "Add Python to PATH"</p>
+                    </div>
+                    <div class="trouble-item">
+                        <h4>Erreur de dépendances</h4>
+                        <p>Mettez à jour pip: <code>python -m pip install --upgrade pip</code></p>
+                    </div>
+                    <div class="trouble-item">
+                        <h4>Problème d'API</h4>
+                        <p>Vérifiez que vos clés API sont valides et bien configurées dans .env</p>
+                    </div>
+                    <div class="trouble-item">
+                        <h4>Port déjà utilisé</h4>
+                        <p>Changez le port dans main2.py ou arrêtez les autres services sur le port 8000</p>
+                    </div>
                 </div>
             </div>
         </div>

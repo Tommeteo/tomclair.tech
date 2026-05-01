@@ -380,6 +380,28 @@ if (neuralCanvas) {
     animateNeuralBg();
 }
 
+// ===== COPY CODE FUNCTIONALITY =====
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('code');
+    const textArea = document.createElement('textarea');
+    textArea.value = code.textContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    
+    // Visual feedback
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<i class="fa-solid fa-check"></i>';
+    button.style.color = '#10b981';
+    
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.style.color = '';
+    }, 2000);
+}
+
 // ===== SMOOTH SCROLL FOR NAV LINKS =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
