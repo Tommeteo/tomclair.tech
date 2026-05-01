@@ -219,15 +219,17 @@ function initMobileMenu() {
 
 // ===== REVEAL ANIMATION =====
 function initRevealAnimation() {
-    // Skip reveal animations on mobile for immediate display
+    // Skip reveal animations on mobile for instant display and fast updates
     if (window.innerWidth <= 768) {
-        const revealElements = document.querySelectorAll('.reveal');
-        revealElements.forEach(element => {
+        // Force immediate display on mobile
+        const allElements = document.querySelectorAll('.reveal, .hero-content, .features-grid, .install-grid, .tech-grid, .faq-container, .contact-form, .section-header, .feature-card, .install-card, .tech-card, .faq-item, .trouble-item');
+        allElements.forEach(element => {
             element.classList.add('active');
         });
         return;
     }
     
+    // Desktop: Keep animations for better UX
     const revealElements = document.querySelectorAll('.reveal');
     
     const revealOnScroll = () => {

@@ -1371,12 +1371,12 @@ body {
     transform: translateY(0);
 }
 
-/* Fix mobile initial display */
+/* Mobile: Disable animations for instant display and fast updates */
 @media (max-width: 768px) {
     .reveal {
-        opacity: 1;
-        transform: translateY(0);
-        transition: none;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        transition: none !important;
     }
     
     .hero-content,
@@ -1384,8 +1384,24 @@ body {
     .install-grid,
     .tech-grid,
     .faq-container,
-    .contact-form {
-        opacity: 1;
-        transform: translateY(0);
+    .contact-form,
+    .section-header,
+    .feature-card,
+    .install-card,
+    .tech-card,
+    .faq-item,
+    .trouble-item {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        transition: none !important;
+    }
+    
+    /* Fast loading optimizations for mobile */
+    body {
+        background: linear-gradient(135deg, #030712 0%, #0a0f1f 50%, #031524 100%);
+    }
+    
+    .hero {
+        background: linear-gradient(135deg, #030712 0%, #0a0f1f 50%, #031524 100%);
     }
 }
