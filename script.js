@@ -7,7 +7,11 @@ window.addEventListener('load', () => {
     initMobileMenu();
     initFAQ();
     initContactForm();
+<<<<<<< HEAD
     initMatrixMode();
+=======
+    initMatrixMode(); // Mode Matrix
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
 });
 
 // ===== TYPING EFFECT =====
@@ -101,6 +105,29 @@ function initNavbarScroll() {
         }
     });
     
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            if (window.pageYOffset >= sectionTop) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
+    });
+    
+    // Active link update on scroll
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('.nav-link');
     
@@ -313,13 +340,25 @@ function initMatrixMode() {
     let animationId = null;
     let isActive = false;
     
+<<<<<<< HEAD
     const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
     const chars = matrixChars.split('');
     
+=======
+    // Caractères pour l'effet Matrix (symboles, chiffres, lettres)
+    const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
+    const chars = matrixChars.split('');
+    
+    // Configuration
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
     const fontSize = 14;
     let columns = 0;
     let drops = [];
     
+<<<<<<< HEAD
+=======
+    // Redimensionner le canvas
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -327,6 +366,7 @@ function initMatrixMode() {
         drops = Array(columns).fill(1);
     }
     
+<<<<<<< HEAD
     function drawMatrix() {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -339,30 +379,70 @@ function initMatrixMode() {
             
             ctx.fillText(char, i * fontSize, drops[i] * fontSize);
             
+=======
+    // Dessiner l'effet Matrix
+    function drawMatrix() {
+        // Fond semi-transparent pour effet de traînée
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Couleur verte Matrix
+        ctx.fillStyle = '#00ff41';
+        ctx.font = `${fontSize}px monospace`;
+        
+        for (let i = 0; i < drops.length; i++) {
+            // Caractère aléatoire
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            
+            // Dessiner le caractère
+            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+            
+            // Réinitialiser la goutte si elle sort de l'écran ou aléatoirement
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
             if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                 drops[i] = 0;
             }
             
+<<<<<<< HEAD
+=======
+            // Faire descendre la goutte
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
             drops[i]++;
         }
     }
     
+<<<<<<< HEAD
+=======
+    // Boucle d'animation
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
     function animate() {
         if (!isActive) return;
         drawMatrix();
         animationId = requestAnimationFrame(animate);
     }
     
+<<<<<<< HEAD
+=======
+    // Activer/Désactiver le mode Matrix
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
     function toggleMatrix() {
         isActive = !isActive;
         
         if (isActive) {
+<<<<<<< HEAD
+=======
+            // Activer
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
             canvas.classList.add('active');
             toggleBtn.classList.add('active');
             document.body.classList.add('matrix-active');
             resizeCanvas();
             animate();
         } else {
+<<<<<<< HEAD
+=======
+            // Désactiver
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
             canvas.classList.remove('active');
             toggleBtn.classList.remove('active');
             document.body.classList.remove('matrix-active');
@@ -372,21 +452,37 @@ function initMatrixMode() {
                 animationId = null;
             }
             
+<<<<<<< HEAD
+=======
+            // Nettoyer le canvas
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
     }
     
+<<<<<<< HEAD
+=======
+    // Événements
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
     toggleBtn.addEventListener('click', (e) => {
         e.preventDefault();
         toggleMatrix();
     });
     
+<<<<<<< HEAD
+=======
+    // Redimensionnement
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
     window.addEventListener('resize', () => {
         if (isActive) {
             resizeCanvas();
         }
     });
     
+<<<<<<< HEAD
+=======
+    // Touche Échap pour désactiver
+>>>>>>> fe83ffc247c44f45d97af55897074314072a4772
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isActive) {
             toggleMatrix();
