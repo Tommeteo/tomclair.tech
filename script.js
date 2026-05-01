@@ -1,12 +1,13 @@
 // ===== MAIN INITIALIZATION =====
 window.addEventListener('load', () => {
-    initFAQ();
-    initContactForm();
     initTypingEffect();
     initScrollProgress();
     initBackToTop();
     initNavbarScroll();
     initMobileMenu();
+    initFAQ();
+    initContactForm();
+    initMatrixMode();
 });
 
 // ===== TYPING EFFECT =====
@@ -39,7 +40,6 @@ function initTypingEffect() {
         }
         
         if (!isDeleting && charIndex === currentText.length) {
-            // Pause at end
             typingSpeed = 2000;
             isDeleting = true;
         } else if (isDeleting && charIndex === 0) {
@@ -95,15 +95,12 @@ function initNavbarScroll() {
     
     window.addEventListener('scroll', () => {
         if (window.pageYOffset > 50) {
-            navbar.style.background = 'rgba(0, 0, 0, 0.95)';
-            navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
+            navbar.classList.add('scrolled');
         } else {
-            navbar.style.background = 'rgba(0, 0, 0, 0.8)';
-            navbar.style.boxShadow = 'none';
+            navbar.classList.remove('scrolled');
         }
     });
     
-    // Active link update on scroll
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('.nav-link');
     
@@ -131,7 +128,6 @@ function initFAQ() {
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
         question.addEventListener('click', () => {
-            // Close other items
             faqItems.forEach(other => {
                 if (other !== item) {
                     other.classList.remove('active');
@@ -153,11 +149,7 @@ function initContactForm() {
         const button = form.querySelector('button');
         const originalText = button.innerHTML;
         
-        // Change button text
-        button.innerHTML = `
-            <span>ENVOI EN COURS...</span>
-            <div class="spinner"></div>
-        `;
+        button.innerHTML = '<span>ENVOI EN COURS...</span><div class="spinner"></div>';
         button.disabled = true;
         
         const formData = new FormData(form);
@@ -208,21 +200,21 @@ window.addEventListener('scroll', revealOnScroll);
 window.addEventListener('load', revealOnScroll);
 
 // ===== NEURAL BACKGROUND ANIMATION =====
-const canvas = document.getElementById('neuralBg');
-if (canvas) {
-    const ctx = canvas.getContext('2d');
+const neuralCanvas = document.getElementById('neuralBg');
+if (neuralCanvas) {
+    const ctx = neuralCanvas.getContext('2d');
     let particles = [];
     
     function initNeuralBg() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        neuralCanvas.width = window.innerWidth;
+        neuralCanvas.height = window.innerHeight;
         particles = [];
-        const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 15000));
+        const particleCount = Math.min(100, Math.floor((neuralCanvas.width * neuralCanvas.height) / 15000));
         
         for (let i = 0; i < particleCount; i++) {
             particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
+                x: Math.random() * neuralCanvas.width,
+                y: Math.random() * neuralCanvas.height,
                 vx: (Math.random() - 0.5) * 0.5,
                 vy: (Math.random() - 0.5) * 0.5,
                 size: Math.random() * 2 + 0.5
@@ -231,22 +223,20 @@ if (canvas) {
     }
     
     function animateNeuralBg() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, neuralCanvas.width, neuralCanvas.height);
         
         particles.forEach((p, i) => {
             p.x += p.vx;
             p.y += p.vy;
             
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            if (p.x < 0 || p.x > neuralCanvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > neuralCanvas.height) p.vy *= -1;
             
-            // Draw particle
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             ctx.fillStyle = 'rgba(0, 210, 255, 0.6)';
             ctx.fill();
             
-            // Draw connections
             for (let j = i + 1; j < particles.length; j++) {
                 const p2 = particles[j];
                 const dx = p.x - p2.x;
@@ -257,7 +247,7 @@ if (canvas) {
                     ctx.beginPath();
                     ctx.moveTo(p.x, p.y);
                     ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = `rgba(0, 210, 255, ${0.1 * (1 - dist / 150)})`;
+                    ctx.strokeStyle = 'rgba(0, 210, 255, ' + (0.1 * (1 - dist / 150)) + ')';
                     ctx.lineWidth = 0.5;
                     ctx.stroke();
                 }
@@ -283,7 +273,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 block: 'start'
             });
         }
-        // Close mobile menu if open
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.querySelector('.nav-links');
         if (navToggle && navLinks) {
@@ -305,11 +294,102 @@ function initMobileMenu() {
         navLinks.classList.toggle('active');
     });
     
-    // Close menu when clicking outside
     document.addEventListener('click', (e) => {
         if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
             navToggle.classList.remove('active');
             navLinks.classList.remove('active');
+        }
+    });
+}
+
+// ===== MATRIX MODE =====
+function initMatrixMode() {
+    const canvas = document.getElementById('matrixCanvas');
+    const toggleBtn = document.getElementById('matrixToggle');
+    
+    if (!canvas || !toggleBtn) return;
+    
+    const ctx = canvas.getContext('2d');
+    let animationId = null;
+    let isActive = false;
+    
+    const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
+    const chars = matrixChars.split('');
+    
+    const fontSize = 14;
+    let columns = 0;
+    let drops = [];
+    
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = Array(columns).fill(1);
+    }
+    
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#00ff41';
+        ctx.font = fontSize + 'px monospace';
+        
+        for (let i = 0; i < drops.length; i++) {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            
+            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            
+            drops[i]++;
+        }
+    }
+    
+    function animate() {
+        if (!isActive) return;
+        drawMatrix();
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    function toggleMatrix() {
+        isActive = !isActive;
+        
+        if (isActive) {
+            canvas.classList.add('active');
+            toggleBtn.classList.add('active');
+            document.body.classList.add('matrix-active');
+            resizeCanvas();
+            animate();
+        } else {
+            canvas.classList.remove('active');
+            toggleBtn.classList.remove('active');
+            document.body.classList.remove('matrix-active');
+            
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+    
+    toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleMatrix();
+    });
+    
+    window.addEventListener('resize', () => {
+        if (isActive) {
+            resizeCanvas();
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isActive) {
+            toggleMatrix();
         }
     });
 }

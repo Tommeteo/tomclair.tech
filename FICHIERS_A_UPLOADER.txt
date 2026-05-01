@@ -1,0 +1,39 @@
+=== FICHIERS À UPLOADER SUR GITHUB ===
+Dépôt : https://github.com/Tommeteo/tomclair.tech
+
+=== 1. FICHIERS ESSENTIELS (OBLIGATOIRES) ===
+✅ index.html        - Page principale du site
+✅ style.css         - Styles et animations
+✅ script.js         - JavaScript interactif
+✅ README.md         - Description du projet
+✅ .gitignore        - Fichiers à ignorer
+
+=== 2. FICHIERS PYTHON (POUR LA DOCUMENTATION) ===
+- main2.py          - Point d'entrée Python
+- jarvis_agent.py    - Agent intelligent
+- requirements.txt   - Dépendances Python
+
+=== 3. FICHIERS À NE PAS UPLOADER ===
+❌ venv/              - Environnement virtuel (trop lourd)
+❌ __pycache__/       - Cache Python
+❌ *.mp3              - Fichiers audio (trop lourds)
+❌ *.bat              - Scripts Windows (inutiles sur GitHub)
+❌ .env               - Fichier privé (clés API)
+❌ jarvis_memoire.json - Données privées
+❌ node_modules/      - Modules Node.js
+❌ frontend/dist/      - Fichiers de build
+
+=== INSTRUCTIONS ===
+1. Va sur : https://github.com/Tommeteo/tomclair.tech
+2. Clique "Add file" → "Upload files"
+3. Glisse les fichiers de la section 1
+4. Commit message : "Ajout du site web Jarvis"
+5. Clique "Commit changes"
+
+=== ACTIVER GITHUB PAGES ===
+1. Dans le dépôt, va dans "Settings"
+2. Clique "Pages" dans le menu gauche
+3. Source : "Deploy from a branch"
+4. Branch : "main" / Folder : "/ (root)"
+5. Clique "Save"
+6. Ton site sera en ligne : https://tommeteo.github.io/tomclair.tech/

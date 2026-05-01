@@ -14,20 +14,24 @@
     <!-- Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
+    <!-- Matrix Canvas -->
+    <canvas id="matrixCanvas" class="matrix-canvas"></canvas>
+
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <span class="logo-text">tomclair</span>
-                <span class="logo-dot">.tech</span>
+                <span class="logo-text">tomclair</span><span class="logo-dot">.tech</span>
             </div>
             <div class="nav-links">
                 <a href="#hero" class="nav-link active">Accueil</a>
-                <a href="#testimonials" class="nav-link">Témoignages</a>
                 <a href="#features" class="nav-link">Fonctionnalités</a>
                 <a href="#tech" class="nav-link">Technique</a>
                 <a href="#faq" class="nav-link">FAQ</a>
                 <a href="#contact" class="nav-link">Contact</a>
+                <button class="matrix-toggle nav-link" id="matrixToggle">
+                    <i class="fa-solid fa-terminal"></i> <span>Matrix</span>
+                </button>
             </div>
             <div class="nav-toggle" id="navToggle">
                 <span></span>
@@ -46,9 +50,8 @@
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
-        <div class="hero-bg-animation" id="neuralBg"></div>
+        <canvas class="hero-bg-animation" id="neuralBg"></canvas>
         <div class="hero-content">
-
             <h1 class="hero-title">
                 <span class="title-line">Jarvis</span>
                 <span class="title-line gradient-text">Votre Assistant Intelligent</span>
@@ -83,6 +86,7 @@
                 <a href="https://www.tiktok.com/@tom_visionai_pro" target="_blank" rel="noopener" class="social-link social-tiktok" aria-label="TikTok">
                     <i class="fa-brands fa-tiktok"></i>
                     <span>@tom_visionai_pro</span>
+                    <span class="follower-count" id="tikTokFollowers">12.4k abonnés</span>
                 </a>
                 <a href="https://www.instagram.com/tom_visionai_pro/" target="_blank" rel="noopener" class="social-link social-instagram" aria-label="Instagram">
                     <i class="fa-brands fa-instagram"></i>
@@ -104,516 +108,58 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-header reveal">
-                <span class="section-tag">TÉMOIGNAGES</span>
-                <h2 class="section-title">Ce Qu'ils Disent De Jarvis</h2>
-                <p class="section-desc">Découvrez les retours de notre communauté sur l'utilisation de l'assistant IA</p>
-            </div>
-            <div class="testimonials-grid" style="display: flex; justify-content: center;">
-                <div class="testimonial-card reveal" style="text-align: center; border: 2px dashed rgba(0, 210, 255, 0.3); max-width: 600px; width: 100%;">
-                    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin-bottom: 1rem;">Notez l'assistant Jarvis !</h3>
-                    <p class="testimonial-text" style="color: var(--text-secondary); margin-bottom: 2rem;">"Donnez-nous une note jusqu'à 7 étoiles pour évaluer l'IA."</p>
-                    
-                    <form action="https://api.web3forms.com/submit" method="POST" class="rating-form">
-                        <!-- Clé Web3Forms existante -->
-                        <input type="hidden" name="access_key" value="42e1bd3d-5ef8-42c7-bb4b-cd7335bfbe16">
-                        <input type="hidden" name="subject" value="Nouvelle note 7 Étoiles sur le site !">
-                        <input type="hidden" name="redirect" value="https://web3forms.com/success">
-                        
-                        <div class="star-rating">
-                            <input type="radio" id="star7" name="Note_Etoiles" value="7" required/><label for="star7"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star6" name="Note_Etoiles" value="6" /><label for="star6"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star5" name="Note_Etoiles" value="5" /><label for="star5"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star4" name="Note_Etoiles" value="4" /><label for="star4"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star3" name="Note_Etoiles" value="3" /><label for="star3"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star2" name="Note_Etoiles" value="2" /><label for="star2"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star1" name="Note_Etoiles" value="1" /><label for="star1"><i class="fa-solid fa-star"></i></label>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 12px 30px; font-size: 1rem;">
-                            Envoyer ma note
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Features Section -->
     <section class="features" id="features">
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-tag">FONCTIONNALITÉS</span>
                 <h2 class="section-title">Ce Que Jarvis Peut Faire Pour Vous</h2>
-                <p class="section-desc">Une suite complète d'outils intelligents pour automatiser et simplifier votre quotidien</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 2a4 4 0 0 1 4 4v1H8V6a4 4 0 0 1 4-4z"/>
-                            <path d="M16 8v6a4 4 0 0 1-8 0V8"/>
-                            <circle cx="9" cy="14" r="1"/>
-                            <circle cx="15" cy="14" r="1"/>
-                        </svg>
-                    </div>
                     <h3>Assistant Vocal</h3>
-                    <p>Interaction naturelle par la voix. tomclair.tech comprend et répond à vos demandes en temps réel.</p>
+                    <p>Interaction naturelle par la voix.</p>
                 </div>
                 <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="4" y="4" width="16" height="16" rx="2"/>
-                            <path d="M9 9h6M9 15h6M9 12h6"/>
-                        </svg>
-                    </div>
                     <h3>Automatisation</h3>
-                    <p>Automatisez vos tâches répétitives et gagnez un temps précieux chaque jour.</p>
+                    <p>Automatisez vos tâches répétitives.</p>
                 </div>
                 <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5"/>
-                            <path d="M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
                     <h3>Multi-Plateforme</h3>
-                    <p>Accédez à tomclair.tech depuis n'importe quel appareil, où que vous soyez.</p>
+                    <p>Accédez depuis n'importe quel appareil.</p>
                 </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                            <path d="M9 12l2 2 4-4"/>
-                        </svg>
-                    </div>
-                    <h3>Sécurisé</h3>
-                    <p>Vos données sur tomclair.tech sont protégées avec un chiffrement de niveau militaire.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 6v6l4 2"/>
-                        </svg>
-                    </div>
-                    <h3>Temps Réel</h3>
-                    <p>Traitement instantané de vos demandes avec une latence quasi nulle.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                            <path d="M3.27 6.96L12 12.01l8.73-5.05"/>
-                            <path d="M12 22.08V12"/>
-                        </svg>
-                    </div>
-                    <h3>Intégration API</h3>
-                    <p>Connectez tomclair.tech à vos outils existants via des API puissantes.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technical Details Section -->
-    <section class="tech-details" id="tech">
-        <div class="container">
-            <div class="section-header reveal">
-                <span class="section-tag">TECHNIQUE</span>
-                <h2 class="section-title">Détails Techniques</h2>
-                <p class="section-desc">Jarvis fonctionne exclusivement avec Python - Découvrez l'architecture</p>
-            </div>
-            
-            <div class="tech-content reveal">
-                <div class="tech-info">
-                    <div class="tech-icon-large">
-                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5"/>
-                            <path d="M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <h3 class="tech-title">Jarvis fonctionne uniquement en Python</h3>
-                    <div class="python-version-badge">
-                        <span>⚠️ VERSION OBLIGATOIRE : PYTHON 3.12.9</span>
-                    </div>
-                    <p class="tech-desc">
-                        Le cœur de <strong>Jarvis</strong> est développé entièrement en <strong>Python 3.12.9</strong>. 
-                        Cette version précise est <strong>OBLIGATOIRE</strong> - aucune autre version ne fonctionnera correctement.
-                        Aucun autre langage n'est requis pour faire fonctionner l'assistant. 
-                        Python 3.12.9 offre la flexibilité et les bibliothèques nécessaires pour l'IA, 
-                        le traitement vocal et l'automatisation.
-                    </p>
-                </div>
-
-                <div class="tech-grid">
-                    <div class="tech-card reveal">
-                        <div class="tech-card-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                            </svg>
-                        </div>
-                        <h4>Langage Unique - Version Précise</h4>
-                        <p>100% Python 3.12.9 uniquement - Pas de JavaScript, Java ou C++ nécessaire</p>
-                    </div>
-
-                    <div class="tech-card reveal">
-                        <div class="tech-card-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <rect x="2" y="3" width="20" height="14" rx="2"/>
-                                <path d="M8 21h8M12 17v4"/>
-                            </svg>
-                        </div>
-                        <h4>Interface Web</h4>
-                        <p>Le site web (HTML/CSS/JS) sert d'interface, mais le backend est en Python</p>
-                    </div>
-
-                    <div class="tech-card reveal">
-                        <div class="tech-card-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 2a4 4 0 0 1 4 4v1H8V6a4 4 0 0 1 4-4z"/>
-                                <path d="M16 8v6a4 4 0 0 1-8 0V8"/>
-                            </svg>
-                        </div>
-                        <h4>Assistant Vocal</h4>
-                        <p>Reconnaissance et synthèse vocale gérées par des bibliothèques Python</p>
-                    </div>
-                </div>
-
-                <div class="files-section reveal">
-                    <h3 class="files-title">📁 Fichiers Nécessaires Pour Faire Fonctionner Jarvis</h3>
-                    <div class="files-grid">
-                        <div class="file-category">
-                            <h4>🐍 Scripts Python Principaux <span style="color: #ff5f56; font-size: 0.8rem;">(PYTHON 3.12.9 REQUIS)</span></h4>
-                            <div class="file-list">
-                                <div class="file-item">
-                                    <span class="file-icon">📄</span>
-                                    <div>
-                                        <strong>main2.py</strong>
-                                        <p>Point d'entrée principal - Lance Jarvis (Nécessite Python 3.12.9)</p>
-                                    </div>
-                                </div>
-                                <div class="file-item">
-                                    <span class="file-icon">📄</span>
-                                    <div>
-                                        <strong>jarvis_agent.py</strong>
-                                        <p>Agent intelligent - Logique de Jarvis (Python 3.12.9)</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="margin-top: 1rem; padding: 10px; background: rgba(255, 95, 86, 0.1); border: 1px solid #ff5f56; border-radius: 6px; font-size: 0.85rem; color: #ff5f56;">
-                                ⚠️ CES SCRIPTS NE FONCTIONNENT QU'AVEC PYTHON 3.12.9 - AUCUNE EXCEPTION
-                            </div>
-                        </div>
-
-                        <div class="file-category">
-                            <h4>🌐 Interface Web (Optionnelle)</h4>
-                            <div class="file-list">
-                                <div class="file-item">
-                                    <span class="file-icon">🌐</span>
-                                    <div>
-                                        <strong>index.html</strong>
-                                        <p>Page d'accueil du site web</p>
-                                    </div>
-                                </div>
-                                <div class="file-item">
-                                    <span class="file-icon">🎨</span>
-                                    <div>
-                                        <strong>style.css</strong>
-                                        <p>Styles et animations du site</p>
-                                    </div>
-                                </div>
-                                <div class="file-item">
-                                    <span class="file-icon">⚡</span>
-                                    <div>
-                                        <strong>script.js</strong>
-                                        <p>Interactivité du site web</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="file-category">
-                            <h4>⚙️ Configuration</h4>
-                            <div class="file-list">
-                                <div class="file-item">
-                                    <span class="file-icon">📋</span>
-                                    <div>
-                                        <strong>requirements.txt</strong>
-                                        <p>Liste des bibliothèques Python à installer</p>
-                                    </div>
-                                </div>
-                                <div class="file-item">
-                                    <span class="file-icon">🔐</span>
-                                    <div>
-                                        <strong>.env</strong>
-                                        <p>Variables d'environnement (API keys)</p>
-                                    </div>
-                                </div>
-                                <div class="file-item">
-                                    <span class="file-icon">📦</span>
-                                    <div>
-                                        <strong>venv/</strong>
-                                        <p>Environnement virtuel Python (recommandé)</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="file-category">
-                            <h4>🚀 Scripts de Lancement</h4>
-                            <div class="file-list">
-                                <div class="file-item">
-                                    <span class="file-icon">▶️</span>
-                                    <div>
-                                        <strong>DEMARRER_JARVIS.bat</strong>
-                                        <p>Lance tomclair.tech sur Windows</p>
-                                    </div>
-                                </div>
-                                <div class="file-item">
-                                    <span class="file-icon">▶️</span>
-                                    <div>
-                                        <strong>LANCER_MOBILE.bat</strong>
-                                        <p>Accès mobile via QR code</p>
-                                    </div>
-                                </div>
-                                <div class="file-item">
-                                    <span class="file-icon">▶️</span>
-                                    <div>
-                                        <strong>install.bat</strong>
-                                        <p>Installe les dépendances automatiquement</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="file-category">
-                            <h4>🧠 Mémoire et Données</h4>
-                            <div class="file-list">
-                                <div class="file-item">
-                                    <span class="file-icon">💾</span>
-                                    <div>
-                                        <strong>jarvis_memoire.json</strong>
-                                        <p>Mémoire persistante de Jarvis</p>
-                                    </div>
-                                </div>
-                                <div class="file-item">
-                                    <span class="file-icon">🔊</span>
-                                    <div>
-                                        <strong>jarvis_tts_*.mp3</strong>
-                                        <p>Fichiers audio générés (voix)</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="file-category">
-                            <h4>📱 Contrôle à Distance</h4>
-                            <div class="file-list">
-                                <div class="file-item">
-                                    <span class="file-icon">📱</span>
-                                    <div>
-                                        <strong>controle/controle.html</strong>
-                                        <p>Interface de contrôle à distance</p>
-                                    </div>
-                                </div>
-                                <div class="file-item">
-                                    <span class="file-icon">🌐</span>
-                                    <div>
-                                        <strong>mobile_qr.html</strong>
-                                        <p>Page pour générer le QR code mobile</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="installation-steps reveal">
-                    <h3 class="steps-title">🚀 Comment Lancer Jarvis</h3>
-                    <div class="steps-list">
-                                <div class="step">
-                                    <div class="step-number">1</div>
-                                    <div class="step-content">
-                                        <strong>⚠️ INSTALLER PYTHON 3.12.9 (OBLIGATOIRE)</strong>
-                                        <p>Télécharger <strong>UNIQUEMENT</strong> Python 3.12.9 depuis 
-                                        <a href="https://www.python.org/downloads/release/python-3129/" target="_blank" style="color: var(--accent-color);">python.org/downloads/release/python-3129</a>
-                                        <br><span style="color: #ff5f56; font-weight: 600;">⚠️ AUCUNE AUTRE VERSION NE FONCTIONNERA</span></p>
-                                    </div>
-                                </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <strong>Installer les dépendances</strong>
-                                <p>Double-cliquer sur <code>install.bat</code> ou exécuter :<br>
-                                <code>pip install -r requirements.txt</code></p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <strong>Configurer les API</strong>
-                                <p>Ajouter vos clés API dans le fichier <code>.env</code></p>
-                            </div>
-                        </div>
-                                <div class="step">
-                                    <div class="step-number">4</div>
-                                    <div class="step-content">
-                                        <strong>Lancer Jarvis</strong>
-                                        <p>Double-cliquer sur <code>DEMARRER_JARVIS.bat</code></p>
-                                    </div>
-                                </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="faq" id="faq">
-        <div class="container">
-            <div class="section-header reveal">
-                <span class="section-tag">FAQ</span>
-                <h2 class="section-title">Questions Fréquentes</h2>
-                <p class="section-desc">Tout ce que vous devez savoir sur tomclair.tech</p>
-            </div>
-                <div class="faq-list">
-                    <div class="faq-item reveal">
-                        <div class="faq-question">
-                            <h3>Qu'est-ce que Jarvis ?</h3>
-                            <span class="faq-toggle">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Jarvis est un assistant intelligent conçu pour vous aider dans votre vie quotidienne. Il peut gérer vos tâches, répondre à vos questions, contrôler vos appareils connectés et bien plus encore.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item reveal">
-                        <div class="faq-question">
-                            <h3>Comment installer Jarvis ?</h3>
-                            <span class="faq-toggle">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>L'installation est simple et rapide. Téléchargez les fichiers, installez Python 3.12.9, puis double-cliquez sur DEMARRER_JARVIS.bat et vous serez prêt en quelques minutes.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item reveal">
-                        <div class="faq-question">
-                            <h3>Jarvis est-il gratuit ?</h3>
-                            <span class="faq-toggle">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Jarvis propose une version gratuite avec des fonctionnalités de base, ainsi que des plans premium pour des besoins plus avancés. Consultez notre page tarifs pour plus de détails.</p>
-                        </div>
-                    </div>
-                <div class="faq-item reveal">
-                    <div class="faq-question">
-                        <h3>Mes données sont-elles sécurisées ?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Absolument. Nous utilisons un chiffrement de bout en bout et ne partageons jamais vos données avec des tiers sans votre consentement explicite.</p>
-                    </div>
-                </div>
-                    <div class="faq-item reveal">
-                        <div class="faq-question">
-                            <h3>Peut-on utiliser Jarvis sur mobile ?</h3>
-                            <span class="faq-toggle">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Oui ! Jarvis est accessible via le script LANCER_MOBILE.bat qui génère un QR code pour accès mobile. Vous pouvez également y accéder via n'importe quel navigateur web moderne.</p>
-                        </div>
-                    </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section class="contact" id="contact">
+    <section class="contact-section" id="contact">
         <div class="container">
-            <div class="section-header reveal">
-                <span class="section-tag">CONTACT</span>
-                <h2 class="section-title">Contactez-Nous</h2>
-                <p class="section-desc">Une question sur Jarvis ? Un projet ? Parlons-en !</p>
-            </div>
-            <div class="contact-wrapper">
-                <div class="contact-info reveal">
-                    <div class="info-item">
-                        <div class="info-icon">📧</div>
-                        <div>
-                            <h4>Email</h4>
-                            <p>tom16112008@gmail.com</p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-icon">📍</div>
-                        <div>
-                            <h4>Localisation</h4>
-                            <p>France</p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-icon">🕐</div>
-                        <div>
-                            <h4>Disponibilité</h4>
-                            <p>24/7 - Support en ligne</p>
-                        </div>
-                    </div>
+            <h2>Contactez-Nous</h2>
+            <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="42e1bd3d-5ef8-42c7-bb4b-cd7335bfbe16">
+                <input type="hidden" name="subject" value="Nouveau message depuis tomclair.tech">
+                <div class="form-group">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" name="name" required placeholder="Votre nom">
                 </div>
-                <form class="contact-form reveal" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
-                    <!-- Clé Web3Forms -->
-                    <input type="hidden" name="access_key" value="42e1bd3d-5ef8-42c7-bb4b-cd7335bfbe16">
-                    <!-- Sujet de l'email -->
-                    <input type="hidden" name="subject" value="Nouveau message depuis le site Jarvis">
-                    <!-- Redirection après succès -->
-                    <input type="hidden" name="redirect" value="https://web3forms.com/success">
-                    
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Votre nom" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="Votre email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="subject_user" placeholder="Sujet" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-full">
-                        <span>ENVOYER LE MESSAGE</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                        </svg>
-                    </button>
-                </form>
-            </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Votre message..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">ENVOYER</button>
+            </form>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="site-footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <span class="logo-text">tomclair</span>
-                    <span class="logo-dot">.tech</span>
-                    <p>Votre assistant intelligent</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#hero">Accueil</a>
-                    <a href="#features">Fonctionnalités</a>
-                    <a href="#tech">Technique</a>
-                    <a href="#faq">FAQ</a>
-                    <a href="#contact">Contact</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Jarvis. Tous droits réservés.</p>
-            </div>
+            <p>&copy; 2026 tomclair.tech - Tous droits réservés</p>
         </div>
     </footer>
 
