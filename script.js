@@ -7,11 +7,7 @@ window.addEventListener('load', () => {
     initMobileMenu();
     initFAQ();
     initContactForm();
-<<<<<<< HEAD
-    initMatrixMode();
-=======
-    initMatrixMode(); // Mode Matrix
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
+initMatrixMode();
 });
 
 // ===== TYPING EFFECT =====
