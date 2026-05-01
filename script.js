@@ -219,6 +219,15 @@ function initMobileMenu() {
 
 // ===== REVEAL ANIMATION =====
 function initRevealAnimation() {
+    // Skip reveal animations on mobile for immediate display
+    if (window.innerWidth <= 768) {
+        const revealElements = document.querySelectorAll('.reveal');
+        revealElements.forEach(element => {
+            element.classList.add('active');
+        });
+        return;
+    }
+    
     const revealElements = document.querySelectorAll('.reveal');
     
     const revealOnScroll = () => {
@@ -231,6 +240,12 @@ function initRevealAnimation() {
             }
         });
     };
+    
+    // Reveal hero content immediately on desktop
+    setTimeout(() => {
+        const heroContent = document.querySelector('.hero-content');
+        if (heroContent) heroContent.classList.add('active');
+    }, 100);
     
     revealOnScroll();
     window.addEventListener('scroll', revealOnScroll);

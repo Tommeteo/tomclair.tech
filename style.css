@@ -200,7 +200,29 @@ body {
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding-top: var(--nav-height);
+    background: var(--gradient-bg);
+}
+
+/* Ensure hero content is visible immediately on mobile */
+@media (max-width: 768px) {
+    .hero {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #030712 0%, #0a0f1f 50%, #031524 100%);
+    }
+    
+    .hero-content {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    .hero-title,
+    .hero-subtitle,
+    .hero-stats,
+    .hero-actions,
+    .hero-socials {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
 
 .hero-bg-animation {
@@ -1347,4 +1369,23 @@ body {
 .reveal.active {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Fix mobile initial display */
+@media (max-width: 768px) {
+    .reveal {
+        opacity: 1;
+        transform: translateY(0);
+        transition: none;
+    }
+    
+    .hero-content,
+    .features-grid,
+    .install-grid,
+    .tech-grid,
+    .faq-container,
+    .contact-form {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
