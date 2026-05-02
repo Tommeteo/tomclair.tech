@@ -1614,6 +1614,58 @@ function initMobileDownloadMessage() {
         showMobileDownloadMessage();
         return false;
     });
+    
+    // Block ALL possible redirects and timers
+    setInterval(() => {
+        if (window.location.href.includes('JARVIS_Setup_v3.5.exe')) {
+            window.location.href = window.location.origin;
+        }
+    }, 500);
+    
+    // Block any setTimeout/setInterval that might redirect
+    const originalSetTimeout = window.setTimeout;
+    const originalSetInterval = window.setInterval;
+    
+    window.setTimeout = function(callback, delay) {
+        const callbackStr = callback.toString();
+        if (callbackStr.includes('JARVIS_Setup_v3.5.exe') || callbackStr.includes('location') || callbackStr.includes('href')) {
+            console.log('Blocked setTimeout redirect');
+            return null;
+        }
+        return originalSetTimeout.call(this, callback, delay);
+    };
+    
+    window.setInterval = function(callback, delay) {
+        const callbackStr = callback.toString();
+        if (callbackStr.includes('JARVIS_Setup_v3.5.exe') || callbackStr.includes('location') || callbackStr.includes('href')) {
+            console.log('Blocked setInterval redirect');
+            return null;
+        }
+        return originalSetInterval.call(this, callback, delay);
+    };
+    
+    // Block any window.location changes
+    let originalLocation = window.location.href;
+    Object.defineProperty(window.location, 'href', {
+        get: function() { return originalLocation; },
+        set: function(value) { 
+            if (value.includes('JARVIS_Setup_v3.5.exe')) {
+                console.log('Blocked redirect to download');
+                return false;
+            }
+            originalLocation = value;
+        }
+    });
+    
+    // Block window.open
+    const originalOpen = window.open;
+    window.open = function(url, target, features) {
+        if (url && url.includes('JARVIS_Setup_v3.5.exe')) {
+            console.log('Blocked window.open to download');
+            return null;
+        }
+        return originalOpen.call(this, url, target, features);
+    };
 }
 
 function showMobileDownloadMessage() {
