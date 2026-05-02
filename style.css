@@ -1162,6 +1162,46 @@ section {
     max-width: 300px;
 }
 
+.project-partnership {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.partnership-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.partnership-text i {
+    color: var(--accent-color);
+    font-size: 1rem;
+}
+
+.partnership-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+}
+
+.partnership-link:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+.partnership-link::after {
+    content: '↗';
+    font-size: 0.8rem;
+    margin-left: 0.25rem;
+    opacity: 0.7;
+}
+
 .footer-links {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1702,6 +1742,20 @@ section {
     
     .footer-brand p {
         font-size: 0.9rem;
+    }
+    
+    .project-partnership {
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+    }
+    
+    .partnership-text {
+        font-size: 0.8rem;
+        text-align: center;
+    }
+    
+    .partnership-link {
+        font-size: 0.85rem;
     }
     
     .footer-links {
