@@ -349,6 +349,48 @@ body {
     color: var(--accent-color);
 }
 
+.btn-download {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-download::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-download:hover::before {
+    left: 100%;
+}
+
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+}
+
+/* Mobile download button optimization */
+@media (max-width: 768px) {
+    .btn-download {
+        width: 100%;
+        justify-content: center;
+        font-size: 1rem;
+        padding: 1rem 1.5rem;
+    }
+    
+    .btn-download i {
+        margin-left: 0.5rem;
+    }
+}
+
 .hero-socials {
     display: flex;
     gap: 1rem;
