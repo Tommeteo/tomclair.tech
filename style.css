@@ -1141,10 +1141,10 @@ section {
     50% { transform: translateX(-50%) translateY(-10px); }
 }
 
-/* Mobile: Show loading screen and optimize display */
+/* Mobile: Skip loading screen - immediate display */
 @media (max-width: 768px) {
     .mobile-loading {
-        display: flex;
+        display: none;
     }
     
     .reveal {
