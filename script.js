@@ -66,6 +66,7 @@ function initAllContent() {
     initMobileMenu();
     initFAQ();
     initContactForm();
+    initDownloadButton();
     
     // Force all elements to be visible on mobile
     const allElements = document.querySelectorAll('.reveal, .hero-content, .features-grid, .install-grid, .tech-grid, .faq-container, .contact-form, .section-header, .feature-card, .install-card, .tech-card, .faq-item, .trouble-item');
@@ -406,6 +407,43 @@ function copyCode(button) {
         button.innerHTML = originalHTML;
         button.style.color = '';
     }, 2000);
+}
+
+// ===== DOWNLOAD BUTTON FUNCTIONALITY =====
+function initDownloadButton() {
+    const downloadBtn = document.querySelector('.btn-download');
+    if (!downloadBtn) return;
+    
+    downloadBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Create download link
+        const downloadUrl = 'JARVIS_Setup_v3.5.exe';
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = 'JARVIS_Setup_v3.5.exe';
+        link.target = '_blank';
+        
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Visual feedback
+        const originalHTML = this.innerHTML;
+        this.innerHTML = '<span>Téléchargement en cours...</span><i class="fa-solid fa-spinner fa-spin"></i>';
+        this.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
+        
+        setTimeout(() => {
+            this.innerHTML = '<span>✓ Téléchargé!</span><i class="fa-solid fa-check"></i>';
+            this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            
+            setTimeout(() => {
+                this.innerHTML = originalHTML;
+                this.style.background = '';
+            }, 2000);
+        }, 1500);
+    });
 }
 
 // ===== SMOOTH SCROLL FOR NAV LINKS =====
