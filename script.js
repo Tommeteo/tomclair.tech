@@ -1706,15 +1706,28 @@ function initJarvisGame() {
     const gameResetBtn = document.getElementById('gameResetBtn');
     const gameSoundBtn = document.getElementById('gameSoundBtn');
     
-    if (!gameLink || !gameModal) return;
+    // Check if elements exist
+    if (!gameLink) {
+        console.log('Game link not found');
+        return;
+    }
+    
+    if (!gameModal) {
+        console.log('Game modal not found');
+        return;
+    }
     
     // Modal controls
     gameLink.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        console.log('Game link clicked');
         openGameModal();
     });
     
-    gameModalClose.addEventListener('click', closeGameModal);
+    if (gameModalClose) {
+        gameModalClose.addEventListener('click', closeGameModal);
+    }
     
     gameModal.addEventListener('click', (e) => {
         if (e.target === gameModal) {
@@ -1730,12 +1743,16 @@ function initJarvisGame() {
     });
     
     function openGameModal() {
+        console.log('Opening game modal');
         gameModal.classList.add('active');
+        gameModal.style.display = 'block';
         document.body.style.overflow = 'hidden';
     }
     
     function closeGameModal() {
+        console.log('Closing game modal');
         gameModal.classList.remove('active');
+        gameModal.style.display = 'none';
         document.body.style.overflow = '';
         resetGame();
     }
