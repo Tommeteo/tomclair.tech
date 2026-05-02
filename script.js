@@ -758,7 +758,11 @@ function initAllContent() {
     initMobileSwipeBlock();
     initMobileDownloadMessage();
     initMobileMenuToggle();
-    initJarvisGame();
+    
+    // Initialize game after a delay to ensure DOM is ready
+    setTimeout(() => {
+        initJarvisGame();
+    }, 500);
 }
 
 // ===== NAVBAR SCROLL =====
@@ -1717,12 +1721,27 @@ function initJarvisGame() {
         return;
     }
     
-    // Modal controls
-    gameLink.addEventListener('click', (e) => {
+    // Modal controls - Add multiple event listeners for reliability
+    gameLink.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Game link clicked');
+        console.log('Game link clicked - direct function');
         openGameModal();
+        return false;
+    });
+    
+    // Also try mousedown for mobile
+    gameLink.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        console.log('Game link mousedown');
+        setTimeout(() => openGameModal(), 100);
+    });
+    
+    // Also try touchstart for mobile
+    gameLink.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        console.log('Game link touchstart');
+        setTimeout(() => openGameModal(), 100);
     });
     
     if (gameModalClose) {
@@ -1744,9 +1763,19 @@ function initJarvisGame() {
     
     function openGameModal() {
         console.log('Opening game modal');
-        gameModal.classList.add('active');
+        console.log('Modal element:', gameModal);
+        
+        // Force display and visibility
         gameModal.style.display = 'block';
+        gameModal.style.visibility = 'visible';
+        gameModal.style.opacity = '1';
+        gameModal.style.pointerEvents = 'auto';
+        gameModal.classList.add('active');
+        
+        // Block body scroll
         document.body.style.overflow = 'hidden';
+        
+        console.log('Modal should be visible now');
     }
     
     function closeGameModal() {
