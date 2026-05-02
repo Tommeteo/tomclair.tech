@@ -83,6 +83,8 @@ function startMaintenanceCountdown() {
         targetTime.setDate(targetTime.getDate() + 1);
     }
     
+    let notificationSent = false;
+    
     function updateCountdown() {
         const currentTime = new Date();
         const difference = targetTime - currentTime;
@@ -95,13 +97,28 @@ function startMaintenanceCountdown() {
             document.getElementById('hours').textContent = String(hours).padStart(2, '0');
             document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
             document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            
+            // Envoyer notification 30 secondes avant la fin
+            if (difference <= 30000 && difference > 29000 && !notificationSent) {
+                sendMaintenanceEndingNotification();
+                notificationSent = true;
+            }
         } else {
-            // Countdown finished - reload page
+            // Countdown finished - send notification and reload page
             document.getElementById('hours').textContent = '00';
             document.getElementById('minutes').textContent = '00';
             document.getElementById('seconds').textContent = '00';
             
-            // Show completion message
+            // Envoyer notification de fin de maintenance
+            if (!notificationSent) {
+                sendMaintenanceCompleteNotification();
+                notificationSent = true;
+            }
+            
+            // Afficher message de fin
+            showMaintenanceCompleteMessage();
+            
+            // Reload page après 5 secondes
             setTimeout(() => {
                 location.reload();
             }, 5000);
@@ -113,6 +130,48 @@ function startMaintenanceCountdown() {
     
     // Update every second
     setInterval(updateCountdown, 1000);
+}
+
+// Notification de fin imminente de maintenance
+function sendMaintenanceEndingNotification() {
+    if (typeof OneSignal !== 'undefined' && window.innerWidth <= 768) {
+        OneSignal.sendSelfNotification(
+            "⏰ Maintenance bientôt terminée!",
+            "Le site Jarvis sera de retour en ligne dans moins de 30 secondes. Préparez-vous!",
+            "https://tomclair.tech",
+            {
+                icon: "https://tomclair.tech/icon.png",
+                badge: "https://tomclair.tech/badge.png",
+                requireInteraction: true,
+                actions: [
+                    {
+                        action: "view",
+                        title: "Actualiser"
+                    }
+                ]
+            }
+        );
+    }
+}
+
+// Afficher le message de fin de maintenance
+function showMaintenanceCompleteMessage() {
+    const maintenanceMessage = document.querySelector('.maintenance-message');
+    if (maintenanceMessage) {
+        maintenanceMessage.innerHTML = `
+            <h2>🎉 Maintenance Terminée!</h2>
+            <p>Le site est maintenant de retour en ligne!</p>
+            <p>Rechargement automatique en cours...</p>
+        `;
+    }
+    
+    const countdownContainer = document.querySelector('.countdown-container');
+    if (countdownContainer) {
+        countdownContainer.innerHTML = `
+            <h3>✅ Mise à jour réussie!</h3>
+            <p>Découvrez les nouvelles améliorations Jarvis</p>
+        `;
+    }
 }
 
 function addMaintenanceStyles() {
