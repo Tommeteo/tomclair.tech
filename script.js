@@ -162,42 +162,48 @@ function initContactForm() {
     const form = document.getElementById('contactForm');
     if (!form) return;
     
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
         
+        const formData = new FormData(form);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const subject = formData.get('subject');
+        const message = formData.get('message');
+        
+        // Créer le mailto link pour tom16112008@gmail.com
+        const mailtoLink = `mailto:tom16112008@gmail.com?subject=${encodeURIComponent(`[Jarvis Site] ${subject}`)}&body=${encodeURIComponent(
+            `Nom: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n---\nEnvoyé depuis le site tomclair.tech`
+        )}`;
+        
+        // Feedback visuel
         const button = form.querySelector('button');
         const originalHTML = button.innerHTML;
         
-        button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Envoi en cours...</span>';
+        button.innerHTML = '<i class="fa-solid fa-envelope"></i> <span>Ouverture du client email...</span>';
+        button.style.background = 'linear-gradient(135deg, #0066ff 0%, #00d4ff 100%)';
         button.disabled = true;
         
-        const formData = new FormData(form);
-        
-        try {
-            // Simulate form submission
-            await new Promise(resolve => setTimeout(resolve, 2000));
+        // Ouvrir le client email par défaut
+        setTimeout(() => {
+            window.location.href = mailtoLink;
             
-            button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Message envoyé !</span>';
-            button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-            form.reset();
-            
+            // Feedback de confirmation
             setTimeout(() => {
-                button.innerHTML = originalHTML;
-                button.style.background = '';
-                button.disabled = false;
-            }, 3000);
-        } catch (error) {
-            button.innerHTML = '<i class="fa-solid fa-exclamation-triangle"></i> <span>Erreur - Réessayez</span>';
-            button.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
-            
-            setTimeout(() => {
-                button.innerHTML = originalHTML;
-                button.style.background = '';
-                button.disabled = false;
-            }, 3000);
-        }
+                button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Client email ouvert!</span>';
+                button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.background = '';
+                    button.disabled = false;
+                    form.reset();
+                }, 2000);
+            }, 1000);
+        }, 500);
     });
 }
+
 
 // ===== SCROLL EFFECTS =====
 function initScrollEffects() {
