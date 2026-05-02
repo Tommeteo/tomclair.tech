@@ -755,6 +755,7 @@ function initAllContent() {
     initScrollEffects();
     initAnimations();
     initOneSignal();
+    initWelcomeMessage();
 }
 
 // ===== NAVBAR SCROLL =====
@@ -1480,6 +1481,59 @@ function initUserCounter() {
             counterElement.style.color = '';
         }, 500);
     }, 8000 + Math.random() * 4000); // Entre 8 et 12 secondes
+}
+
+// ===== WELCOME MESSAGE =====
+function initWelcomeMessage() {
+    const welcomeOverlay = document.getElementById('welcomeOverlay');
+    const welcomeBtn = document.getElementById('welcomeBtn');
+    
+    if (!welcomeOverlay || !welcomeBtn) return;
+    
+    // Vérifier si le message a déjà été montré aujourd'hui
+    const today = new Date().toDateString();
+    const lastShown = localStorage.getItem('jarvis_welcome_shown');
+    
+    if (lastShown === today) {
+        // Si déjà montré aujourd'hui, cacher directement
+        welcomeOverlay.classList.add('hidden');
+        return;
+    }
+    
+    // Gérer le clic sur le bouton
+    welcomeBtn.addEventListener('click', () => {
+        closeWelcomeMessage();
+    });
+    
+    // Fermer automatiquement après 10 secondes (optionnel)
+    setTimeout(() => {
+        if (!welcomeOverlay.classList.contains('hidden')) {
+            closeWelcomeMessage();
+        }
+    }, 10000);
+    
+    // Fermer avec la touche Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !welcomeOverlay.classList.contains('hidden')) {
+            closeWelcomeMessage();
+        }
+    });
+}
+
+function closeWelcomeMessage() {
+    const welcomeOverlay = document.getElementById('welcomeOverlay');
+    if (!welcomeOverlay) return;
+    
+    // Animation de sortie
+    welcomeOverlay.classList.add('hidden');
+    
+    // Sauvegarder la date d'affichage
+    localStorage.setItem('jarvis_welcome_shown', new Date().toDateString());
+    
+    // Supprimer complètement après l'animation
+    setTimeout(() => {
+        welcomeOverlay.style.display = 'none';
+    }, 500);
 }
 
 // ===== CONSOLE LOGO =====
