@@ -2005,13 +2005,14 @@ section {
     
     .btn.mobile-download {
         background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-        cursor: default;
+        cursor: pointer;
         position: relative;
+        transition: all 0.3s ease;
     }
     
     .btn.mobile-download:hover {
-        transform: none;
-        box-shadow: none;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(107, 114, 128, 0.3);
     }
     
     .mobile-download-message {
