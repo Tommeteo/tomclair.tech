@@ -41,7 +41,7 @@ function showMaintenancePage() {
                             <span class="countdown-label">Secondes</span>
                         </div>
                     </div>
-                    <p class="target-time">Aujourd'hui à 17H30</p>
+                    <p class="target-time">Aujourd'hui à 14H05</p>
                 </div>
                 
                 <div class="maintenance-features">
@@ -73,12 +73,12 @@ function showMaintenancePage() {
 }
 
 function startMaintenanceCountdown() {
-    // Set target time to today at 17:30
+    // Set target time to today at 14:05
     const now = new Date();
     const targetTime = new Date();
-    targetTime.setHours(17, 30, 0, 0);
+    targetTime.setHours(14, 5, 0, 0);
     
-    // If 17:30 has passed, set to tomorrow
+    // If 14:05 has passed, set to tomorrow
     if (now > targetTime) {
         targetTime.setDate(targetTime.getDate() + 1);
     }
