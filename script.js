@@ -327,6 +327,7 @@ function initAllContent() {
     initContactForm();
     initScrollEffects();
     initAnimations();
+    initOneSignal();
 }
 
 // ===== NAVBAR SCROLL =====
@@ -667,6 +668,133 @@ window.addEventListener('error', (e) => {
 window.addEventListener('unhandledrejection', (e) => {
     console.error('Unhandled promise rejection:', e.reason);
 });
+
+// ===== ONE SIGNAL PUSH NOTIFICATIONS =====
+function initOneSignal() {
+    // Only initialize on mobile devices
+    if (window.innerWidth > 768) {
+        return; // Skip on desktop/tablet
+    }
+    
+    // Wait for OneSignal SDK to load
+    setTimeout(() => {
+        if (typeof OneSignal !== 'undefined') {
+            OneSignal.init({
+                appId: "YOUR_ONESIGNAL_APP_ID", // Remplacer par votre App ID OneSignal
+                notifyButton: {
+                    enable: false, // Désactiver le bouton de notification par défaut
+                },
+                promptOptions: {
+                    slidedown: {
+                        prompts: [
+                            {
+                                type: "push",
+                                autoPrompt: true,
+                                text: {
+                                    actionMessage: "Jarvis veut vous envoyer des notifications de mises à jour",
+                                    acceptButton: "Autoriser",
+                                    cancelButton: "Plus tard",
+                                    explanationMessage: "Recevez les dernières nouvelles de Jarvis directement sur votre mobile"
+                                }
+                            }
+                        ]
+                    }
+                },
+                welcomeNotification: {
+                    title: "Bienvenue sur Jarvis!",
+                    message: "Vous recevrez les alertes de mises à jour très bientôt.",
+                    url: "https://tomclair.tech"
+                }
+            });
+            
+            // Event listeners pour les notifications
+            OneSignal.on('subscriptionChange', function (isSubscribed) {
+                if (isSubscribed) {
+                    console.log('Utilisateur abonné aux notifications OneSignal');
+                    sendWelcomeNotification();
+                }
+            });
+            
+            // Configurer les tags pour les notifications ciblées
+            OneSignal.push(function() {
+                OneSignal.sendTag("device_type", "mobile");
+                OneSignal.sendTag("user_type", "jarvis_visitor");
+            });
+            
+        } else {
+            console.log('OneSignal SDK pas encore chargé');
+        }
+    }, 2000);
+}
+
+// Envoyer une notification de bienvenue
+function sendWelcomeNotification() {
+    if (typeof OneSignal !== 'undefined') {
+        OneSignal.sendSelfNotification(
+            " Jarvis vous remercie!",
+            "Merci d'avoir activé les notifications. Restez informé des mises à jour!",
+            "https://tomclair.tech",
+            {
+                icon: "https://tomclair.tech/icon.png",
+                badge: "https://tomclair.tech/badge.png",
+                image: "https://tomclair.tech/jarvis-notification.png"
+            }
+        );
+    }
+}
+
+// Envoyer des notifications de mises à jour (à appeler manuellement)
+function sendUpdateNotification(title, message, url = "https://tomclair.tech") {
+    if (typeof OneSignal !== 'undefined' && window.innerWidth <= 768) {
+        OneSignal.sendSelfNotification(
+            "🚀 " + title,
+            message,
+            url,
+            {
+                icon: "https://tomclair.tech/icon.png",
+                badge: "https://tomclair.tech/badge.png",
+                requireInteraction: true,
+                actions: [
+                    {
+                        action: "view",
+                        title: "Voir les détails"
+                    },
+                    {
+                        action: "dismiss",
+                        title: "Ignorer"
+                    }
+                ]
+            }
+        );
+    }
+}
+
+// Notification de maintenance terminée
+function sendMaintenanceCompleteNotification() {
+    sendUpdateNotification(
+        "Maintenance Terminée!",
+        "Jarvis est de retour avec de nouvelles améliorations. Découvrez les nouveautés!",
+        "https://tomclair.tech"
+    );
+}
+
+// Notification de nouvelle version
+function sendNewVersionNotification(version) {
+    sendUpdateNotification(
+        "Nouvelle Version Jarvis v" + version,
+        "Téléchargez la dernière version avec des fonctionnalités améliorées et corrections de bugs.",
+        "https://tomclair.tech#installation"
+    );
+}
+
+// Notification de fonctionnalités
+function sendFeatureNotification(featureName, description) {
+    sendUpdateNotification(
+        "🎉 Nouveauté: " + featureName,
+        description,
+        "https://tomclair.tech#features"
+    );
+}
 
 // ===== CONSOLE LOGO =====
 console.log('%c Jarvis Assistant %c tomclair.tech', 
