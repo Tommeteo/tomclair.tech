@@ -122,12 +122,19 @@ function initContactForm() {
         const formData = new FormData(form);
         
         try {
-            // Envoyer via Formspree directement
+            // Envoyer via Formspree directement avec configuration correcte
             const response = await fetch('https://formspree.io/f/xjvqzvqj', {
                 method: 'POST',
-                body: formData,
+                body: JSON.stringify({
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    subject: formData.get('subject'),
+                    message: formData.get('message'),
+                    _replyto: formData.get('email')
+                }),
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             });
             
