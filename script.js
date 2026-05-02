@@ -1915,8 +1915,10 @@ function initJarvisGame() {
         gameScore.textContent = score;
         gameLevel.textContent = level;
         
-        // Update lives
+        // Update lives - make sure we have exactly 10 hearts
         const hearts = gameLives.querySelectorAll('i');
+        console.log('Updating display - lives:', lives, 'hearts found:', hearts.length);
+        
         hearts.forEach((heart, index) => {
             if (index >= lives) {
                 heart.classList.add('lost');
@@ -1924,6 +1926,10 @@ function initJarvisGame() {
                 heart.classList.remove('lost');
             }
         });
+        
+        // Debug: log heart states
+        const activeHearts = gameLives.querySelectorAll('i:not(.lost)').length;
+        console.log('Active hearts:', activeHearts, 'Expected lives:', lives);
     }
     
     function gameOver() {
