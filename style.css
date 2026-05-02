@@ -1982,58 +1982,55 @@ section {
     }
     
     .mobile-download-message {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
         background: linear-gradient(135deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 31, 58, 0.98) 100%);
         border: 2px solid rgba(0, 102, 255, 0.3);
         border-radius: 16px;
-        padding: 2rem 1.5rem;
-        max-width: 90%;
-        width: 300px;
+        padding: 1.5rem;
+        max-width: 280px;
+        width: 90%;
         text-align: center;
-        z-index: 10000;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        margin: auto;
+        z-index: 99999 !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+        margin: 0 !important;
         box-sizing: border-box;
-        height: fit-content;
     }
     
     .mobile-download-message h3 {
         color: var(--primary-color);
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
         font-family: 'Orbitron', monospace;
+        line-height: 1.2;
     }
     
     .mobile-download-message p {
         color: var(--text-primary);
-        font-size: 1rem;
-        line-height: 1.5;
-        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 0.8rem;
     }
     
     .mobile-download-message .signature {
         color: var(--text-secondary);
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         font-style: italic;
+        margin-top: 0.5rem;
     }
     
     .mobile-download-close {
         background: var(--primary-color);
         color: white;
         border: none;
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
+        border-radius: 6px;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
         cursor: pointer;
         margin-top: 1rem;
+        width: 100%;
         transition: all 0.3s ease;
     }
     
@@ -2049,22 +2046,29 @@ section {
         display: none;
     }
     
-    /* Mobile Sections */
+    /* Mobile Sections - Ultra Optimized */
     section {
-        padding: 3rem 0;
+        padding: 2rem 0 !important;
     }
     
     .container {
-        padding: 0 1rem;
+        padding: 0 1rem !important;
+        max-width: 100% !important;
     }
     
     .section-header {
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem !important;
     }
     
     .section-title {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
+        font-size: 1.5rem !important;
+        margin-bottom: 0.8rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .section-subtitle {
+        font-size: 0.9rem !important;
+        margin-bottom: 1rem !important;
     }
     
     .section-subtitle {
