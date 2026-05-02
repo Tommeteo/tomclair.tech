@@ -4,8 +4,8 @@ function initMobileLoading() {
     if (window.innerWidth <= 768) {
         // Check if user already subscribed
         const hasSubscribed = localStorage.getItem('jarvis_email_subscribed');
-        if (hasSubscribed === 'true') {
-            // User already subscribed, show normal site
+        if (hasSubscribed === 'true' || hasSubscribed === 'skipped') {
+            // User already subscribed or skipped, show normal site
             initAllContent();
         } else {
             // Show email capture page
@@ -140,7 +140,7 @@ function initEmailCapture() {
     if (skipBtn) {
         skipBtn.addEventListener('click', () => {
             // Mark as skipped but still show site
-            localStorage.setItem('jarvis_email_subscribed', 'false');
+            localStorage.setItem('jarvis_email_subscribed', 'skipped');
             initAllContent();
         });
     }
