@@ -2389,39 +2389,36 @@ section {
         display: none;
     }
     
-    /* Mobile Sections - Ultra Optimized */
-    section {
-        padding: 2rem 0 !important;
-    }
-    
-    .container {
-        padding: 0 1rem !important;
-        max-width: 100% !important;
-    }
-    
-    .section-header {
-        margin-bottom: 1.5rem !important;
-    }
-    
-    .section-title {
-        font-size: 1.5rem !important;
-        margin-bottom: 0.8rem !important;
-        line-height: 1.2 !important;
-    }
-    
-    .section-subtitle {
-        font-size: 0.9rem !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    .section-subtitle {
-        font-size: 1rem;
-    }
-    
     /* Mobile Presentation */
     .presentation-content {
         grid-template-columns: 1fr;
         gap: 2rem;
+        text-align: center !important;
+    }
+    
+    .presentation-text h3 {
+        font-size: 1.4rem !important;
+        margin-bottom: 1rem !important;
+        text-align: center !important;
+    }
+    
+    .presentation-text p {
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+        margin-bottom: 1.5rem !important;
+        text-align: center !important;
+    }
+    
+    .presentation-visual {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 200px;
+    }
+    
+    .presentation-visual .visual-icon {
+        font-size: 4rem !important;
+        color: var(--primary-color);
     }
     
     .text-block {
@@ -2462,29 +2459,120 @@ section {
     }
     
     .feature-card {
-        padding: 1.5rem;
-    }
-    
-    .feature-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
+        padding: 2rem 1.5rem !important;
+        text-align: center !important;
+        min-height: auto !important;
     }
     
     .feature-card h3 {
-        font-size: 1.1rem;
-        margin-bottom: 0.75rem;
+        font-size: 1.3rem !important;
+        margin-bottom: 1rem !important;
+        text-align: center !important;
     }
     
     .feature-card p {
-        font-size: 0.95rem;
-        margin-bottom: 1rem;
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+        margin-bottom: 1.5rem !important;
+        text-align: center !important;
+    }
+    
+    .feature-icon {
+        font-size: 3rem !important;
+        margin-bottom: 1.5rem !important;
+        color: var(--primary-color) !important;
+    }
+    
+    .feature-list {
+        font-size: 0.95rem !important;
+        text-align: center !important;
+        line-height: 1.5 !important;
     }
     
     .feature-list li {
-        font-size: 0.9rem;
-        padding: 0.25rem 0;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Mobile Game Modal */
+    .game-modal-content {
+        width: 95% !important;
+        max-height: 95vh !important;
+        margin: 0 !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+    }
+    
+    .game-modal-header {
+        padding: 1rem 1.5rem !important;
+    }
+    
+    .game-modal-header h2 {
+        font-size: 1.2rem !important;
+    }
+    
+    .game-container {
+        padding: 1.5rem !important;
+    }
+    
+    .game-grid {
+        max-width: 280px !important;
+        gap: 1rem !important;
+        margin: 0 auto !important;
+    }
+    
+    .game-tile {
+        border-radius: 12px !important;
+        aspect-ratio: 1 !important;
+    }
+    
+    .tile-content {
+        font-size: 2rem !important;
+    }
+    
+    .game-header {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        text-align: center !important;
+        padding: 1rem !important;
+    }
+    
+    .game-score, .game-level, .game-lives {
+        font-size: 0.9rem !important;
+    }
+    
+    .score-value, .level-value {
+        font-size: 1rem !important;
+    }
+    
+    .lives-container i {
+        font-size: 1rem !important;
+    }
+    
+    .game-controls {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+    
+    .game-btn {
+        width: 100% !important;
+        padding: 0.75rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .game-instructions {
+        font-size: 0.85rem !important;
+        padding: 1rem !important;
+    }
+    
+    .game-instructions h4 {
+        font-size: 1rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .game-instructions li {
+        font-size: 0.8rem !important;
+        margin-bottom: 0.4rem !important;
     }
     
     /* Mobile Installation */
@@ -2494,19 +2582,28 @@ section {
     }
     
     .step-card {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem !important;
+        text-align: center !important;
+        min-height: auto !important;
     }
     
     .step-number {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
+        font-size: 2rem !important;
+        margin-bottom: 1rem !important;
+        color: var(--primary-color) !important;
     }
     
-    .step-content h3 {
-        font-size: 1.1rem;
-        margin-bottom: 0.75rem;
+    .step-card h3 {
+        font-size: 1.3rem !important;
+        margin-bottom: 1rem !important;
+        text-align: center !important;
+    }
+    
+    .step-card p {
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+        margin-bottom: 1rem !important;
+        text-align: center !important;
     }
     
     .step-content p {
