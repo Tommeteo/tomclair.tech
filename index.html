@@ -273,6 +273,90 @@
         </div>
     </section>
 
+    <!-- Quiz Section -->
+    <section class="quiz" id="quiz">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🎮 Testez vos connaissances sur Jarvis</h2>
+                <p class="section-subtitle">
+                    Découvrez à quel point vous connaissez votre assistant intelligent
+                </p>
+            </div>
+            
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quizProgress"></div>
+                        </div>
+                        <span class="progress-text" id="progressText">Question 1/5</span>
+                    </div>
+                    <div class="quiz-score">
+                        <span class="score-label">Score:</span>
+                        <span class="score-value" id="quizScore">0</span>
+                    </div>
+                </div>
+                
+                <div class="quiz-content" id="quizContent">
+                    <div class="quiz-question" id="quizQuestion">
+                        <h3>Quelle est la principale fonctionnalité de Jarvis ?</h3>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="0">
+                                <span class="option-letter">A</span>
+                                <span class="option-text">Assistant vocal intelligent</span>
+                            </button>
+                            <button class="quiz-option" data-answer="1">
+                                <span class="option-letter">B</span>
+                                <span class="option-text">Jeu vidéo</span>
+                            </button>
+                            <button class="quiz-option" data-answer="2">
+                                <span class="option-letter">C</span>
+                                <span class="option-text">Réseau social</span>
+                            </button>
+                            <button class="quiz-option" data-answer="3">
+                                <span class="option-letter">D</span>
+                                <span class="option-text">Navigateur web</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-feedback" id="quizFeedback">
+                        <div class="feedback-content">
+                            <i class="feedback-icon"></i>
+                            <p class="feedback-text"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-actions">
+                        <button class="btn btn-secondary" id="nextBtn" style="display: none;">
+                            <i class="fa-solid fa-arrow-right"></i>
+                            <span>Question suivante</span>
+                        </button>
+                        <button class="btn btn-primary" id="restartBtn" style="display: none;">
+                            <i class="fa-solid fa-redo"></i>
+                            <span>Recommencer</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="quiz-results" id="quizResults" style="display: none;">
+                    <div class="results-content">
+                        <div class="results-icon">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h3>Quiz terminé !</h3>
+                        <div class="final-score">
+                            <span class="score-number" id="finalScore">0</span>
+                            <span class="score-total">/ 5</span>
+                        </div>
+                        <p class="results-message" id="resultsMessage"></p>
+                        <div class="results-badge" id="resultsBadge"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Installation Section -->
     <section class="installation" id="installation">
         <div class="container">

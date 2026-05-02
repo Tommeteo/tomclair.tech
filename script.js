@@ -755,6 +755,7 @@ function initAllContent() {
     initScrollEffects();
     initAnimations();
     initOneSignal();
+    initQuiz();
 }
 
 // ===== NAVBAR SCROLL =====
@@ -1221,6 +1222,213 @@ function sendFeatureNotification(featureName, description) {
         description,
         "https://tomclair.tech#features"
     );
+}
+
+// ===== QUIZ FUNCTIONALITY =====
+function initQuiz() {
+    const quizData = [
+        {
+            question: "Quelle est la principale fonctionnalité de Jarvis ?",
+            options: [
+                "Assistant vocal intelligent",
+                "Jeu vidéo",
+                "Réseau social",
+                "Navigateur web"
+            ],
+            correct: 0,
+            feedback: "Jarvis est un assistant vocal intelligent qui vous aide dans vos tâches quotidiennes."
+        },
+        {
+            question: "Quel système d'exploitation est compatible avec Jarvis ?",
+            options: [
+                "macOS uniquement",
+                "Windows 10/11",
+                "Linux uniquement",
+                "Tous les systèmes"
+            ],
+            correct: 1,
+            feedback: "Jarvis est compatible avec Windows 10 et Windows 11 pour une expérience optimale."
+        },
+        {
+            question: "Quelle technologie utilise Jarvis pour la reconnaissance vocale ?",
+            options: [
+                "Siri",
+                "Google Assistant",
+                "Propriétaire avec IA avancée",
+                "Alexa"
+            ],
+            correct: 2,
+            feedback: "Jarvis utilise sa propre technologie de reconnaissance vocale avec IA avancée."
+        },
+        {
+            question: "Combien de langues Jarvis peut-il traduire ?",
+            options: [
+                "10 langues",
+                "25 langues",
+                "Plus de 50 langues",
+                "100 langues"
+            ],
+            correct: 2,
+            feedback: "Jarvis peut traduire plus de 50 langues avec une précision remarquable."
+        },
+        {
+            question: "Quelle est la taille du fichier d'installation de Jarvis ?",
+            options: [
+                "10MB",
+                "45MB",
+                "100MB",
+                "500MB"
+            ],
+            correct: 1,
+            feedback: "Le fichier JARVIS_Setup_v3.5.exe pèse moins de 50MB (environ 45MB)."
+        }
+    ];
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+    
+    const quizContent = document.getElementById('quizContent');
+    const quizResults = document.getElementById('quizResults');
+    const quizProgress = document.getElementById('quizProgress');
+    const progressText = document.getElementById('progressText');
+    const quizScore = document.getElementById('quizScore');
+    const nextBtn = document.getElementById('nextBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    
+    if (!quizContent) return;
+    
+    function loadQuestion() {
+        const question = quizData[currentQuestion];
+        const quizQuestion = document.getElementById('quizQuestion');
+        
+        quizQuestion.innerHTML = `
+            <h3>${question.question}</h3>
+            <div class="quiz-options">
+                ${question.options.map((option, index) => `
+                    <button class="quiz-option" data-answer="${index}">
+                        <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+                        <span class="option-text">${option}</span>
+                    </button>
+                `).join('')}
+            </div>
+        `;
+        
+        // Update progress
+        const progress = ((currentQuestion + 1) / quizData.length) * 100;
+        quizProgress.style.width = `${progress}%`;
+        progressText.textContent = `Question ${currentQuestion + 1}/${quizData.length}`;
+        
+        // Add event listeners to options
+        const options = quizQuestion.querySelectorAll('.quiz-option');
+        options.forEach(option => {
+            option.addEventListener('click', () => selectAnswer(parseInt(option.dataset.answer)));
+        });
+        
+        // Hide feedback and next button
+        const feedback = document.getElementById('quizFeedback');
+        feedback.classList.remove('show');
+        nextBtn.style.display = 'none';
+        answered = false;
+    }
+    
+    function selectAnswer(selectedIndex) {
+        if (answered) return;
+        answered = true;
+        
+        const question = quizData[currentQuestion];
+        const options = document.querySelectorAll('.quiz-option');
+        const feedback = document.getElementById('quizFeedback');
+        
+        // Disable all options
+        options.forEach(option => option.classList.add('disabled'));
+        
+        // Show correct/incorrect
+        if (selectedIndex === question.correct) {
+            options[selectedIndex].classList.add('correct');
+            score++;
+            quizScore.textContent = score;
+            
+            feedback.className = 'quiz-feedback correct show';
+            feedback.innerHTML = `
+                <div class="feedback-content">
+                    <i class="feedback-icon fa-solid fa-check-circle"></i>
+                    <p class="feedback-text">Correct! ${question.feedback}</p>
+                </div>
+            `;
+        } else {
+            options[selectedIndex].classList.add('incorrect');
+            options[question.correct].classList.add('correct');
+            
+            feedback.className = 'quiz-feedback incorrect show';
+            feedback.innerHTML = `
+                <div class="feedback-content">
+                    <i class="feedback-icon fa-solid fa-times-circle"></i>
+                    <p class="feedback-text">Incorrect. ${question.feedback}</p>
+                </div>
+            `;
+        }
+        
+        // Show next button or finish
+        if (currentQuestion < quizData.length - 1) {
+            nextBtn.style.display = 'flex';
+        } else {
+            setTimeout(showResults, 2000);
+        }
+    }
+    
+    function nextQuestion() {
+        currentQuestion++;
+        loadQuestion();
+    }
+    
+    function showResults() {
+        quizContent.style.display = 'none';
+        quizResults.style.display = 'block';
+        
+        const finalScore = document.getElementById('finalScore');
+        const resultsMessage = document.getElementById('resultsMessage');
+        const resultsBadge = document.getElementById('resultsBadge');
+        
+        finalScore.textContent = score;
+        
+        let message, badge;
+        if (score === 5) {
+            message = "Excellent! Vous connaissez parfaitement Jarvis! Vous êtes un véritable expert.";
+            badge = "🏆 Expert Jarvis";
+        } else if (score >= 3) {
+            message = "Bravo! Vous avez une bonne connaissance de Jarvis. Continuez comme ça!";
+            badge = "🌟 Connaisseur Jarvis";
+        } else {
+            message = "Pas mal! Il y a encore des choses à découvrir sur Jarvis. Téléchargez-le pour en savoir plus!";
+            badge = "📚 Apprenti Jarvis";
+        }
+        
+        resultsMessage.textContent = message;
+        resultsBadge.textContent = badge;
+        
+        restartBtn.style.display = 'flex';
+    }
+    
+    function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        answered = false;
+        
+        quizScore.textContent = '0';
+        quizContent.style.display = 'block';
+        quizResults.style.display = 'none';
+        restartBtn.style.display = 'none';
+        
+        loadQuestion();
+    }
+    
+    // Event listeners
+    nextBtn?.addEventListener('click', nextQuestion);
+    restartBtn?.addEventListener('click', restartQuiz);
+    
+    // Load first question
+    loadQuestion();
 }
 
 // ===== CONSOLE LOGO =====
