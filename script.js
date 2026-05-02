@@ -108,114 +108,50 @@ function initContactForm() {
     const form = document.getElementById('contactForm');
     if (!form) return;
     
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
         
         const button = form.querySelector('button');
         const originalHTML = button.innerHTML;
         
-        // Afficher l'état de chargement
-        button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Envoi en cours...</span>';
-        button.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
-        button.disabled = true;
-        
+        // Récupérer les données du formulaire
         const formData = new FormData(form);
         const name = formData.get('name');
         const email = formData.get('email');
         const subject = formData.get('subject');
         const message = formData.get('message');
         
-        try {
-            // Solution 1: Essayer Formspree avec FormData
-            const response1 = await fetch('https://formspree.io/f/xjvqzvqj', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
+        // Créer le mailto link direct vers tom16112008@gmail.com
+        const mailtoSubject = encodeURIComponent(`[Jarvis Site] ${subject}`);
+        const mailtoBody = encodeURIComponent(
+            `Nom: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n---\nEnvoyé depuis le site tomclair.tech`
+        );
+        const mailtoLink = `mailto:tom16112008@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
+        
+        // Feedback visuel
+        button.innerHTML = '<i class="fa-solid fa-envelope"></i> <span>Ouverture du client email...</span>';
+        button.style.background = 'linear-gradient(135deg, #0066ff 0%, #00d4ff 100%)';
+        button.disabled = true;
+        
+        // Ouvrir le client email
+        setTimeout(() => {
+            window.location.href = mailtoLink;
             
-            if (response1.ok) {
-                // Succès
-                button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Message envoyé avec succès!</span>';
+            // Feedback de confirmation
+            setTimeout(() => {
+                button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Email prêt à envoyer!</span>';
                 button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-                form.reset();
                 
+                // Réinitialiser le formulaire
                 setTimeout(() => {
                     button.innerHTML = originalHTML;
                     button.style.background = '';
                     button.disabled = false;
-                }, 3000);
-                return;
-            }
-            
-            // Solution 2: Utiliser EmailJS (fallback)
-            await sendEmailWithWeb3Email(name, email, subject, message);
-            
-            button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Message envoyé avec succès!</span>';
-            button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-            form.reset();
-            
-            setTimeout(() => {
-                button.innerHTML = originalHTML;
-                button.style.background = '';
-                button.disabled = false;
-            }, 3000);
-            
-        } catch (error) {
-            console.error('Erreur:', error);
-            
-            // Solution 3: Créer un email mailto comme dernier recours
-            const mailtoLink = `mailto:tom16112008@gmail.com?subject=${encodeURIComponent(`[Jarvis Site] ${subject}`)}&body=${encodeURIComponent(
-                `Nom: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n---\nEnvoyé depuis le site tomclair.tech`
-            )}`;
-            
-            button.innerHTML = '<i class="fa-solid fa-envelope"></i> <span>Ouverture client email...</span>';
-            button.style.background = 'linear-gradient(135deg, #0066ff 0%, #00d4ff 100%)';
-            
-            setTimeout(() => {
-                window.location.href = mailtoLink;
-                
-                setTimeout(() => {
-                    button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Prêt à envoyer!</span>';
-                    button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-                    
-                    setTimeout(() => {
-                        button.innerHTML = originalHTML;
-                        button.style.background = '';
-                        button.disabled = false;
-                        form.reset();
-                    }, 2000);
-                }, 1000);
-            }, 500);
-        }
+                    form.reset();
+                }, 2000);
+            }, 1000);
+        }, 500);
     });
-}
-
-// Solution alternative avec Web3Forms (gratuit)
-async function sendEmailWithWeb3Email(name, email, subject, message) {
-    const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            access_key: 'YOUR_ACCESS_KEY', // À remplacer avec une vraie clé
-            name: name,
-            email: email,
-            subject: `[Jarvis Site] ${subject}`,
-            message: message,
-            from_name: name,
-            replyto: email
-        })
-    });
-    
-    if (!response.ok) {
-        throw new Error('Web3Forms failed');
-    }
-    
-    return response.json();
 }
 
 
