@@ -1692,8 +1692,11 @@ function initMobileMenuToggle() {
     });
 }
 
-// ===== JARVIS MINI GAME =====
+// ===== JARVIS MINI GAME MODAL =====
 function initJarvisGame() {
+    const gameLink = document.getElementById('gameLink');
+    const gameModal = document.getElementById('gameModal');
+    const gameModalClose = document.getElementById('gameModalClose');
     const gameStartBtn = document.getElementById('gameStartBtn');
     const gameGrid = document.getElementById('gameGrid');
     const gameMessage = document.getElementById('gameMessage');
@@ -1702,6 +1705,40 @@ function initJarvisGame() {
     const gameLives = document.getElementById('gameLives');
     const gameResetBtn = document.getElementById('gameResetBtn');
     const gameSoundBtn = document.getElementById('gameSoundBtn');
+    
+    if (!gameLink || !gameModal) return;
+    
+    // Modal controls
+    gameLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openGameModal();
+    });
+    
+    gameModalClose.addEventListener('click', closeGameModal);
+    
+    gameModal.addEventListener('click', (e) => {
+        if (e.target === gameModal) {
+            closeGameModal();
+        }
+    });
+    
+    // Close on escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && gameModal.classList.contains('active')) {
+            closeGameModal();
+        }
+    });
+    
+    function openGameModal() {
+        gameModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeGameModal() {
+        gameModal.classList.remove('active');
+        document.body.style.overflow = '';
+        resetGame();
+    }
     
     if (!gameStartBtn || !gameGrid || !gameMessage) return;
     

@@ -44,6 +44,7 @@
                 <a href="#technologies" class="nav-link">Technologies</a>
                 <a href="#faq" class="nav-link">FAQ</a>
                 <a href="#contact" class="nav-link">Contact</a>
+                <a href="#" class="nav-link" id="gameLink">🎮 Jeu Jarvis</a>
             </div>
             <div class="nav-toggle" id="navToggle">
                 <span></span>
@@ -273,14 +274,15 @@
         </div>
     </section>
 
-    <!-- Jarvis Mini Game Section -->
-    <section class="jarvis-game" id="jarvisGame">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">🎮 Mini-Jeu Jarvis</h2>
-                <p class="section-subtitle">
-                    Testez vos réflexes avec Jarvis dans ce jeu de mémoire !
-                </p>
+    <!-- Jarvis Game Modal -->
+    <div class="game-modal" id="gameModal">
+        <div class="game-modal-overlay"></div>
+        <div class="game-modal-content">
+            <div class="game-modal-header">
+                <h2>🎮 Mini-Jeu Jarvis</h2>
+                <button class="game-modal-close" id="gameModalClose">
+                    <i class="fa-solid fa-times"></i>
+                </button>
             </div>
             
             <div class="game-container">
@@ -359,7 +361,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- Installation Section -->
     <section class="installation" id="installation">
