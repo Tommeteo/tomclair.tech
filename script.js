@@ -1592,10 +1592,16 @@ function initMobileSwipeBlock() {
     document.body.style.touchAction = 'pan-y';
 }
 
-// ===== MOBILE DOWNLOAD UNBLOCKED =====
+// ===== MOBILE DOWNLOAD REMOVAL =====
 function initMobileDownloadMessage() {
-    // Download is now enabled on mobile - no blocking
-    return;
+    // Only apply on mobile devices
+    if (window.innerWidth > 768) return;
+    
+    const downloadBtn = document.querySelector('a[href="JARVIS_Setup_v3.5.exe"]');
+    if (!downloadBtn) return;
+    
+    // Remove download button on mobile
+    downloadBtn.remove();
 }
 
 function showMobileDownloadMessage() {
