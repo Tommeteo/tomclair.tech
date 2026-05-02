@@ -1632,14 +1632,9 @@ function showMobileDownloadMessage() {
     // Add to page
     document.body.appendChild(messageDiv);
     
-    // Auto-remove after 10 seconds
-    setTimeout(() => {
-        if (messageDiv.parentElement) {
-            messageDiv.remove();
-        }
-    }, 10000);
+    // NO auto-remove - user must close manually
     
-    // Close on escape key
+    // Close only on user action (escape key)
     const escapeHandler = (e) => {
         if (e.key === 'Escape' && messageDiv.parentElement) {
             messageDiv.remove();

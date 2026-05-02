@@ -2026,16 +2026,24 @@ section {
         color: white;
         border: none;
         border-radius: 6px;
-        padding: 0.6rem 1.2rem;
-        font-size: 0.9rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
         cursor: pointer;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
         width: 100%;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
     }
     
     .mobile-download-close:hover {
         background: var(--accent-color);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+    }
+    
+    .mobile-download-close:active {
+        transform: translateY(0);
     }
     
     .hero-visual {
