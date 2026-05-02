@@ -1,75 +1,455 @@
-// ===== MOBILE MAINTENANCE SCREEN =====
+// ===== MOBILE EMAIL CAPTURE SCREEN =====
 function initMobileLoading() {
-    // Check if it's mobile and show maintenance page
+    // Check if it's mobile and show email capture page
     if (window.innerWidth <= 768) {
-        showMaintenancePage();
+        // Check if user already subscribed
+        const hasSubscribed = localStorage.getItem('jarvis_email_subscribed');
+        if (hasSubscribed === 'true') {
+            // User already subscribed, show normal site
+            initAllContent();
+        } else {
+            // Show email capture page
+            showEmailCapturePage();
+        }
     } else {
         initAllContent();
     }
 }
 
-function showMaintenancePage() {
-    // Hide all content
+function showEmailCapturePage() {
+    // Hide all content and show email capture
     document.body.innerHTML = `
-        <div class="maintenance-container">
-            <div class="maintenance-content">
-                <div class="maintenance-logo">
+        <div class="email-capture-container">
+            <div class="email-capture-content">
+                <div class="email-capture-logo">
                     <span class="logo-text">tomclair</span><span class="logo-dot">.tech</span>
                 </div>
-                <div class="maintenance-title">Jarvis</div>
-                <div class="maintenance-subtitle">Mode Maintenance</div>
+                <div class="email-capture-title">Jarvis</div>
+                <div class="email-capture-subtitle">Votre Assistant Intelligent</div>
                 
-                <div class="maintenance-message">
-                    <h2>🔧 Mise à jour en cours</h2>
-                    <p>Le site est actuellement en maintenance pour une mise à jour majeure.</p>
-                    <p>Nous améliorons votre expérience Jarvis!</p>
+                <div class="email-capture-message">
+                    <h2>� Restez connecté aux nouveautés!</h2>
+                    <p>Inscrivez-vous pour recevoir les dernières mises à jour de Jarvis directement sur votre mobile.</p>
+                    <p>Soyez le premier à découvrir les nouvelles fonctionnalités!</p>
                 </div>
                 
-                <div class="countdown-container">
-                    <h3>🕐 Reprise prévue</h3>
-                    <div class="countdown" id="maintenanceCountdown">
-                        <div class="countdown-item">
-                            <span class="countdown-value" id="hours">00</span>
-                            <span class="countdown-label">Heures</span>
+                <div class="email-capture-form">
+                    <h3>� Inscrivez votre email</h3>
+                    <form id="emailCaptureForm">
+                        <div class="form-group">
+                            <input type="email" id="userEmail" placeholder="votre@email.com" required>
                         </div>
-                        <div class="countdown-item">
-                            <span class="countdown-value" id="minutes">00</span>
-                            <span class="countdown-label">Minutes</span>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="agreeTerms" required>
+                                <span class="checkmark"></span>
+                                J'accepte de recevoir les nouveautés Jarvis
+                            </label>
                         </div>
-                        <div class="countdown-item">
-                            <span class="countdown-value" id="seconds">00</span>
-                            <span class="countdown-label">Secondes</span>
-                        </div>
-                    </div>
-                    <p class="target-time">Aujourd'hui à 14H05</p>
+                        <button type="submit" class="submit-btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>S'inscrire aux nouveautés</span>
+                        </button>
+                    </form>
                 </div>
                 
-                <div class="maintenance-features">
-                    <h3>🚀 Nouveautés attendues</h3>
+                <div class="email-capture-benefits">
+                    <h3>✨ Ce que vous recevrez:</h3>
                     <ul>
-                        <li>⚡ Performance améliorée</li>
-                        <li>🎨 Design modernisé</li>
-                        <li>📱 Expérience mobile optimisée</li>
-                        <li>🔧 Nouvelles fonctionnalités Jarvis</li>
+                        <li>📱 Notifications push des mises à jour</li>
+                        <li>🎉 Alertes des nouvelles fonctionnalités</li>
+                        <li>⚡ Informations sur les améliorations</li>
+                        <li>🔧 Accès prioritaire aux nouveautés</li>
                     </ul>
                 </div>
                 
-                <div class="maintenance-contact">
-                    <p>Questions? Contactez-nous:</p>
-                    <a href="mailto:tom16112008@gmail.com" class="contact-link">
-                        <i class="fa-solid fa-envelope"></i>
-                        tom16112008@gmail.com
-                    </a>
+                <div class="skip-option">
+                    <button id="skipBtn" class="skip-btn">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        Continuer sans s'inscrire
+                    </button>
                 </div>
             </div>
         </div>
     `;
     
-    // Start countdown
-    startMaintenanceCountdown();
+    // Initialize email capture
+    initEmailCapture();
     
-    // Add maintenance styles
-    addMaintenanceStyles();
+    // Add email capture styles
+    addEmailCaptureStyles();
+}
+
+function initEmailCapture() {
+    const form = document.getElementById('emailCaptureForm');
+    const skipBtn = document.getElementById('skipBtn');
+    
+    // Handle form submission
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('userEmail').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            if (!agreeTerms) {
+                alert('Veuillez accepter de recevoir les nouveautés Jarvis');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = form.querySelector('.submit-btn');
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Inscription...</span>';
+            submitBtn.disabled = true;
+            
+            try {
+                // Save email to localStorage
+                localStorage.setItem('jarvis_user_email', email);
+                localStorage.setItem('jarvis_email_subscribed', 'true');
+                
+                // Send to OneSignal (if configured)
+                if (typeof OneSignal !== 'undefined') {
+                    await OneSignal.push(function() {
+                        OneSignal.setExternalUserId(email);
+                        OneSignal.sendTags({
+                            user_email: email,
+                            subscribed: 'true',
+                            device_type: 'mobile'
+                        });
+                    });
+                }
+                
+                // Show success message
+                showEmailCaptureSuccess(email);
+                
+                // Initialize OneSignal after subscription
+                setTimeout(() => {
+                    initOneSignal();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error during email capture:', error);
+                // Still proceed with local storage
+                showEmailCaptureSuccess(email);
+            }
+        });
+    }
+    
+    // Handle skip button
+    if (skipBtn) {
+        skipBtn.addEventListener('click', () => {
+            // Mark as skipped but still show site
+            localStorage.setItem('jarvis_email_subscribed', 'false');
+            initAllContent();
+        });
+    }
+}
+
+function showEmailCaptureSuccess(email) {
+    const container = document.querySelector('.email-capture-container');
+    if (container) {
+        container.innerHTML = `
+            <div class="success-content">
+                <div class="success-icon">
+                    <i class="fa-solid fa-check-circle"></i>
+                </div>
+                <h2>🎉 Inscription réussie!</h2>
+                <p>Merci ${email}!</p>
+                <p>Vous recevrez toutes les nouveautés Jarvis directement sur votre mobile.</p>
+                <button onclick="initAllContent()" class="continue-btn">
+                    <i class="fa-solid fa-rocket"></i>
+                    <span>Découvrir Jarvis</span>
+                </button>
+            </div>
+        `;
+    }
+}
+
+function addEmailCaptureStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .email-capture-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .email-capture-content {
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .email-capture-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-text {
+            color: #0066ff;
+        }
+        
+        .logo-dot {
+            color: #00d4ff;
+        }
+        
+        .email-capture-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .email-capture-subtitle {
+            font-size: 1rem;
+            color: #00d4ff;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .email-capture-message {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .email-capture-message h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #f59e0b;
+        }
+        
+        .email-capture-message p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #a0a0a0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .email-capture-form {
+            background: rgba(0, 102, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .email-capture-form h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #0066ff;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+        
+        .form-group input::placeholder {
+            color: #a0a0a0;
+        }
+        
+        .checkbox-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            cursor: pointer;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            display: none;
+        }
+        
+        .checkmark {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #0066ff;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-label input[type="checkbox"]:checked + .checkmark {
+            background: #0066ff;
+        }
+        
+        .checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+            content: '✓';
+            color: white;
+            font-size: 0.7rem;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 102, 255, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .email-capture-benefits {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .email-capture-benefits h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #10b981;
+            text-align: center;
+        }
+        
+        .email-capture-benefits ul {
+            list-style: none;
+        }
+        
+        .email-capture-benefits li {
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .skip-option {
+            text-align: center;
+        }
+        
+        .skip-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            color: #a0a0a0;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .skip-btn:hover {
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .success-content {
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+        
+        .success-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #10b981;
+        }
+        
+        .success-content p {
+            font-size: 1rem;
+            color: #a0a0a0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .continue-btn {
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .submit-btn:not(:disabled) {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 function startMaintenanceCountdown() {
