@@ -2093,24 +2093,24 @@ function initDownloadButton() {
     const downloadBtn = document.getElementById('downloadBtn');
     if (!downloadBtn) return;
     
-    // Don't interfere with the natural download behavior
-    // Just add visual feedback without blocking the download
+    // Don't interfere with natural download behavior
+    // Just add visual feedback without blocking download
     downloadBtn.addEventListener('click', function(e) {
-        console.log('Download button clicked - allowing natural download');
+        console.log('Download button clicked - downloading from GitHub');
         
         // Add visual feedback after download starts
         setTimeout(() => {
             const originalHTML = this.innerHTML;
             const originalStyle = this.style.background;
             
-            this.innerHTML = '<i class="fa-solid fa-check"></i> <span>Téléchargement démarré!</span>';
+            this.innerHTML = '<i class="fa-solid fa-check"></i> <span>Téléchargement depuis GitHub...</span>';
             this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
             
-            // Reset after 2 seconds
+            // Reset after 3 seconds
             setTimeout(() => {
                 this.innerHTML = originalHTML;
                 this.style.background = originalStyle;
-            }, 2000);
+            }, 3000);
         }, 500);
     });
 }
