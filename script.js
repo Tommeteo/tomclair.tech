@@ -2101,7 +2101,7 @@ function initDownloadButton() {
         const originalHTML = this.innerHTML;
         const originalStyle = this.style.background;
         
-        this.innerHTML = '<i class="fa-solid fa-download"></i> <span>Téléchargement local...</span>';
+        this.innerHTML = '<i class="fa-solid fa-download"></i> <span>Téléchargement en cours...</span>';
         this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
         
         // Reset after 2 seconds
