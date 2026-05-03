@@ -760,11 +760,7 @@ function initAllContent() {
     initMobileMenuToggle();
     initDownloadButton();
     
-    // Initialize game after a delay to ensure DOM is ready
-    setTimeout(() => {
-        initJarvisGame();
-    }, 500);
-}
+    }
 
 // ===== NAVBAR SCROLL =====
 function initNavbarScroll() {
@@ -1880,7 +1876,7 @@ function initJarvisGame() {
             if (lives === 0) {
                 gameOver();
             } else {
-                showMessage(`❌ Mauvaise tuile ! ${lives} vies restantes`, 'Réessayez la séquence...');
+                showMessage(` Mauvaise tuile ! ${lives} vies restantes`, 'Réessayez la séquence...');
                 setTimeout(() => {
                     playerSequence = [];
                     showSequence();
@@ -1893,7 +1889,7 @@ function initJarvisGame() {
             updateDisplay();
             playSuccessSound();
             
-            showMessage('✅ Excellent !', `Niveau ${level} - Préparez-vous...`);
+            showMessage(' Excellent !', `Niveau ${level} - Préparez-vous...`);
             setTimeout(() => {
                 nextRound();
             }, 2000);
@@ -1937,13 +1933,13 @@ function initJarvisGame() {
         isPlaying = false;
         disableTiles();
         
-        showMessage('🎮 Game Over !', `Score final: ${score} | Niveau atteint: ${level}`);
+        showMessage(' Game Over !', `Score final: ${score} | Niveau atteint: ${level}`);
         
         setTimeout(() => {
             gameGrid.style.display = 'none';
             gameMessage.style.display = 'block';
             gameMessage.innerHTML = `
-                <h3>🎮 Game Over !</h3>
+                <h3> Game Over !</h3>
                 <p>Score final: ${score} | Niveau atteint: ${level}</p>
                 <button class="game-start-btn" onclick="startGame()">
                     <i class="fa-solid fa-redo"></i>
